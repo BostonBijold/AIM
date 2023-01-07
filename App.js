@@ -11,6 +11,7 @@ import ManageGoal from "./screens/ManageGoal";
 import ViewGoals from "./screens/ViewGoals";
 import ManageTask from "./screens/ManageTask";
 import Information from "./screens/Information";
+import CompletedGoals from './screens/CompletedGoals';
 
 import { GlobalStyles } from "./constants/colors";
 
@@ -32,11 +33,11 @@ function AgileLifeDevelopmentOverview() {
         tabBarIcon: ({color, size}) => <Ionicons name='git-merge' size={size} color={color} />
       }}
       />
-      <BottomTabs.Screen name="Information" component={Information} 
+      <BottomTabs.Screen name="Completed goals" component={CompletedGoals} 
             options={{
-              titile: 'Info',
-              tabBarLabel: 'Info', 
-              tabBarIcon: ({color, size}) => <Ionicons name='information-circle-outline' size={size} color={color} />
+              titile: 'Completed',
+              tabBarLabel: 'Completed', 
+              tabBarIcon: ({color, size}) => <Ionicons name='checkmark-circle' size={size} color={color} />
             }}
       />
     </BottomTabs.Navigator>

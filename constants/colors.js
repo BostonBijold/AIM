@@ -1,10 +1,10 @@
 export const GlobalStyles = {
     colors: {
         background: '#949993',
-        layer1: '#677D63',
-        layer2: '#495E45',
-        layer3: '#2C4129',
-        layer4: '#233720',
+        layer1light: '#677D63',
+        layer1: '#495E45',
+        layer2: '#2C4129',
+        layer3: '#233720',
     
         dark1: '#12250F',
         dark2: '#031A00',
