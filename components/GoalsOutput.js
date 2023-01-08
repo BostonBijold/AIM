@@ -5,7 +5,7 @@ import GoalList from "../storage/GoalLIst";
 const DUMMY_GOALS = [
     {
         id: 'g1',
-         //title: 'goal',
+         title: 'Goal App',
          willDescription: 'create a goal tracking app',
          whyDescription: 'I can track my goals and lear Agile and development.', 
          deadline: new Date ('2024-01-01'),
@@ -14,7 +14,7 @@ const DUMMY_GOALS = [
     },
     {
         id: 'g2',
-         //title: 'goal',
+         title: 'Potty Training',
          willDescription: 'potty train Harrison',
          whyDescription: 'we can stop spending money on dipers.', 
          deadline: new Date ('2023-07-01'),
@@ -23,7 +23,7 @@ const DUMMY_GOALS = [
     },
     {
         id: 'g3',
-         //title: 'goal',
+         title: 'Gym Habit',
          willDescription: 'make going to the gym a habit',
          whyDescription: 'I can be more physically fit and a better Boston.', 
          deadline: new Date ('2023-01-01'),
@@ -32,7 +32,7 @@ const DUMMY_GOALS = [
     },
     {
         id: 'g4',
-         //title: 'goal',
+         title: '5 Lbs',
          willDescription: 'gain 5 pounds of muscle',
          whyDescription: 'I have a better physique and a stonger body.', 
          deadline: new Date ('2024-01-01'),
