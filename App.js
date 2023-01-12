@@ -30,9 +30,12 @@ function AgileLifeDevelopmentOverview() {
         tabBarActiveTintColor: GlobalStyles.colors.white,
         //tabBarInactiveTintColor: GlobalStyles.colors.layer4,
         headerRight: ({ tintColor }) => (
-          <IconButton icon={"add"} size={30} color={tintColor}
+          <IconButton icon={"person"} size={30} color={tintColor}
           onPress={() => {navigation.navigate('Manage Goal')}} />
         ),
+        headerLeft:  ({ tintColor }) => (
+          <IconButton icon={"information-circle-outline"} size={30} color={tintColor}
+          onPress={() => {navigation.navigate('Information')}} />)
       })}
     >
             <BottomTabs.Screen
@@ -100,6 +103,7 @@ export default function App() {
             presentation: "modal"
           }} />
           <Stack.Screen name="Manage Task" component={ManageTask} />
+          <Stack.Screen name="Information" component={Information} />
         </Stack.Navigator>
       </NavigationContainer>
       </GoalContextProvider>
