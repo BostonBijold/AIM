@@ -77,6 +77,7 @@ function submitHandler() {
     !inputs.deadline.isValid ||
     !inputs.title.isValid;
 
+
   return (
     <View style={styles.form}>
       <View>
@@ -84,19 +85,28 @@ function submitHandler() {
           style={styles.rowInput}
           label="Title:"
           invalid={!inputs.willDescription}
-          textInputConfig={{}}
+          textInputConfig={{
+            onChangeText: inputChangedHandler.bind(this, 'title'),
+            value: inputs.title.value
+          }}
         />
         <Input
           style={styles.rowInput}
           label="I will:"
           invalid={!inputs.willDescription}
-          textInputConfig={{}}
+          textInputConfig={{
+            onChangeText: inputChangedHandler.bind(this, 'willDescription'),
+            value: inputs.willDescription.value
+          }}
         />
                 <Input
           style={styles.rowInput}
           label="So that:"
           invalid={!inputs.willDescription}
-          textInputConfig={{}}
+          textInputConfig={{
+            onChangeText: inputChangedHandler.bind(this, 'whyDescription'),
+            value: inputs.whyDescription.value
+          }}
         />
 
         <Input
@@ -112,17 +122,17 @@ function submitHandler() {
         />
         {formIsInvalid && <Text style={styles.errorText}> Invalid Entry </Text>}
         <View style={styles.buttonsContainer}>
-            <Button style={styles.button}>Cancel</Button>
-            <Button style={styles.button}>Save</Button>
+            <Button style={styles.button} onPress={onCancel}>Cancel</Button>
+            <Button style={styles.button} onPress={onSubmit}>{submitButtonLable}</Button>
         </View>
       </View>
-      <View style={styles.buttonContainer}>
+      {/* <View style={styles.buttonContainer}>
   <IconButton
     icon={"add"}
     size={50}
     color={GlobalStyles.colors.dark1}
   ></IconButton>
-</View>
+</View> */}
     </View>
   );
 }

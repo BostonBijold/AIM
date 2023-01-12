@@ -1,13 +1,18 @@
-import { useLayoutEffect } from "react";
+import { useContext, useLayoutEffect } from "react";
 import { StyleSheet, Text, View, Pressable, TextInput } from "react-native";
 import GoalsForm from "../components/ManageEntries/GoalsForm";
 import Button from "../components/UI/Button";
 import IconButton from "../components/UI/IconButton";
 import { GlobalStyles } from "../constants/colors";
+import { GoalContext } from "../storage/goal-context";
 
 function ManageGoals({ route, navigation }) {
+  const goalsCtx = useContext(GoalContext);
+
   const editedGoalId = route.params?.goalId;
   const isEditing = !!editedGoalId;
+
+  const selectedGoal = goalsCtx.goals.find(goal => goal.id === editedGoalId);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -17,37 +22,52 @@ function ManageGoals({ route, navigation }) {
 
   //if complete - conditional change to show different icon for complete.
 
-  function deleteGoalHandler() {}
+  function deleteGoalHandler() {
+    goalsCtx.deleteGoal(editedGoalId);
+    navigation.goback();
+  }
 
-  function completeGoalHandler() {}
+  function completeGoalHandler() {
+    navigation.goBack();
+  }
+
+  function confirmHandler(goalData) {
+   if (isEditing) {
+    goalsCtx.updateGoal(editedGoalId, goalData);
+   } else {
+    goalsCtx.addGoal(goalData);
+   }
+   navigation.goBack();
+  }
 
   function addTaskHandler() {}
 
-  function closeHandler() {
+  function cancelHandler() {
     navigation.goBack();
   }
 
   return (
     <View style={styles.container}>
-      <View style={styles.contentContainer}>
-        <GoalsForm />
         {isEditing && (
           <View style={styles.completeCancel}>
             <IconButton
               icon={"trash"}
               size={50}
               color={GlobalStyles.colors.dark1}
-              onPress={closeHandler}
+              onPress={deleteGoalHandler}
             />
             <IconButton
               icon={"checkbox"}
               size={50}
               color={GlobalStyles.colors.dark1}
-              onPress={closeHandler}
+              onPress={completeGoalHandler}
             />
           </View>
         )}
-      </View>
+        <GoalsForm onCancel={cancelHandler}
+        onSubmit={confirmHandler}
+        submitButtonLable={isEditing ? 'Update' : 'Add'}
+        />
     </View>
   );
 }
@@ -57,11 +77,12 @@ export default ManageGoals;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center'
+    padding: 20
   },
 
   completeCancel: {
     flexDirection: "row",
+    justifyContent: 'space-between'
   },
   buttonContainer: {
     borderColor: GlobalStyles.colors.layer1,
@@ -80,6 +101,7 @@ const styles = StyleSheet.create({
 });
 
 //set the title of the goal as the title on the card or 'add goal'.
+// trash and complete goal icons need to be at the top of the form .
 
 {
   /* <View style={styles.container}>
