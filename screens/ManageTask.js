@@ -6,3 +6,5 @@ function ManageTask() {
 };
 
 export default ManageTask;
+
+//set the page title as 'add task' or task title. 

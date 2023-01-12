@@ -15,6 +15,7 @@ import CompletedGoals from "./screens/CompletedGoals";
 
 import { GlobalStyles } from "./constants/colors";
 import IconButton from "./components/UI/IconButton";
+import GoalContextProvider from "./storage/goal-context";
 
 const BottomTabs = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -67,22 +68,30 @@ export default function App() {
   return (
     <>
       <StatusBar style="auto" />
+      <GoalContextProvider>
       <NavigationContainer>
         <Stack.Navigator
-          screenOptions={{
+          screenOptions={({ navigation }) => ({
             headerStyle: { backgroundColor: GlobalStyles.colors.layer1 },
             headerTintColor: "#fff",
-          }}
+            headerRight: ({ tintColor }) => (
+              <IconButton icon={"close"} size={30} color={tintColor}
+              onPress={() => {navigation.goBack()}} />
+            ),
+          })}
         >
           <Stack.Screen
             name="Back"
             component={AgileLifeDevelopmentOverview}
             options={{ headerShown: false }}
           />
-          <Stack.Screen name="Manage Goal" component={ManageGoal} />
+          <Stack.Screen name="Manage Goal" component={ManageGoal} options={{
+            presentation: "modal"
+          }} />
           <Stack.Screen name="Manage Task" component={ManageTask} />
         </Stack.Navigator>
       </NavigationContainer>
+      </GoalContextProvider>
     </>
   );
 }

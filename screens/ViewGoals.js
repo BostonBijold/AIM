@@ -1,11 +1,11 @@
-import { Text } from "react-native";
+import { useContext } from "react";
 import GoalsOutput from "../components/GoalsOutput";
-
-
+import { GoalContext } from "../storage/goal-context";
 
 function ViewGoals() {
-    return (
-    <GoalsOutput />
-)};
+  const goalsCtx = useContext(GoalContext);
+  
+  return <GoalsOutput goals={ goalsCtx.goals } />;
+}
 
 export default ViewGoals;

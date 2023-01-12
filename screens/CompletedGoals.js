@@ -1,8 +1,15 @@
-import { StyleSheet, Text, View } from 'react-native';
-
+import { useContext } from "react";
+import GoalsOutput from "../components/GoalsOutput";
+import { GoalContext } from "../storage/goal-context";
 
 function CompletedGoals() {
-   return  <Text>CompletedGoals </Text>
-};
+  const goalsCtx = useContext(GoalContext);
+
+  const completedGoals = goalsCtx.goals.filter((goal) => {
+    return goal.complete === true;
+  });
+
+  return <GoalsOutput goals={completedGoals} />;
+}
 
 export default CompletedGoals;
