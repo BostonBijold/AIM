@@ -12,7 +12,7 @@ import ViewGoals from "./screens/ViewGoals";
 import ManageTask from "./screens/ManageTask";
 import Information from "./screens/Information";
 import CompletedGoals from "./screens/CompletedGoals";
-
+import DailyFocus from "./screens/DailyFocus";
 import { GlobalStyles } from "./constants/colors";
 import IconButton from "./components/UI/IconButton";
 import GoalContextProvider from "./storage/goal-context";
@@ -35,6 +35,17 @@ function AgileLifeDevelopmentOverview() {
         ),
       })}
     >
+            <BottomTabs.Screen
+        name="Focus"
+        component={DailyFocus}
+        options={{
+          titile: "Focus",
+          tabBarLabel: "Focus",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="calendar" size={size} color={color} />
+          ),
+        }}
+      />
       <BottomTabs.Screen
         name="Goals"
         component={ViewGoals}

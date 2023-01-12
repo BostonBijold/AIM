@@ -6,7 +6,7 @@ function CompletedGoals() {
   const goalsCtx = useContext(GoalContext);
 
   const completedGoals = goalsCtx.goals.filter((goal) => {
-    return goal.complete === true;
+    return goal.isComplete === true;
   });
 
   return <GoalsOutput goals={completedGoals} />;

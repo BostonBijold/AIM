@@ -4,8 +4,12 @@ import { GoalContext } from "../storage/goal-context";
 
 function ViewGoals() {
   const goalsCtx = useContext(GoalContext);
+
+    const activeGoals = goalsCtx.goals.filter((goal) => {
+    return goal.isComplete === false;
+  });
+  return <GoalsOutput goals={ activeGoals } />;
   
-  return <GoalsOutput goals={ goalsCtx.goals } />;
 }
 
 export default ViewGoals;

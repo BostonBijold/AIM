@@ -1,5 +1,5 @@
 import { useLayoutEffect } from "react";
-import { StyleSheet, Text, View, Pressable, TextInput} from "react-native";
+import { StyleSheet, Text, View, Pressable, TextInput } from "react-native";
 import GoalsForm from "../components/ManageEntries/GoalsForm";
 import Button from "../components/UI/Button";
 import IconButton from "../components/UI/IconButton";
@@ -21,7 +21,7 @@ function ManageGoals({ route, navigation }) {
 
   function completeGoalHandler() {}
 
-  function addTaskHandler(){}
+  function addTaskHandler() {}
 
   function closeHandler() {
     navigation.goBack();
@@ -29,24 +29,25 @@ function ManageGoals({ route, navigation }) {
 
   return (
     <View style={styles.container}>
+      <View style={styles.contentContainer}>
         <GoalsForm />
-      {isEditing && (
-        <View style={styles.completeCancel}>
-          <IconButton
-            icon={"trash"}
-            size={50}
-            color={GlobalStyles.colors.dark1}
-            onPress={closeHandler}
-          />
-          <IconButton
-            icon={"checkbox"}
-            size={50}
-            color={GlobalStyles.colors.dark1}
-            onPress={closeHandler}
-          />
-        </View>
-      )}
-
+        {isEditing && (
+          <View style={styles.completeCancel}>
+            <IconButton
+              icon={"trash"}
+              size={50}
+              color={GlobalStyles.colors.dark1}
+              onPress={closeHandler}
+            />
+            <IconButton
+              icon={"checkbox"}
+              size={50}
+              color={GlobalStyles.colors.dark1}
+              onPress={closeHandler}
+            />
+          </View>
+        )}
+      </View>
     </View>
   );
 }
@@ -56,16 +57,9 @@ export default ManageGoals;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
+    alignItems: 'center'
   },
-  contentContainer: {
-    borderBottomColor: GlobalStyles.colors.layer1light,
-    borderBottomWidth: 2,
-    padding: 12,
-    width: 300,
-    alignItems: 'center',
-    
-  },
+
   completeCancel: {
     flexDirection: "row",
   },
@@ -77,18 +71,18 @@ const styles = StyleSheet.create({
     width: 200,
     justifyContent: "center",
     alignItems: "center",
-    margin: 8
+    margin: 8,
   },
   inputContainer: {
     borderWidth: 2,
-    borderRadius: 8, 
-
-  }
+    borderRadius: 8,
+  },
 });
 
 //set the title of the goal as the title on the card or 'add goal'.
 
-{/* <View style={styles.container}>
+{
+  /* <View style={styles.container}>
 <View style={styles.contentContainer}>
   <Text>I will: </Text>
   <TextInput />
@@ -121,4 +115,5 @@ const styles = StyleSheet.create({
   </View>
 )}
 
-</View> */}
+</View> */
+}

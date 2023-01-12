@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
         borderRadius: 8, 
         padding: 8,
         backgroundColor: GlobalStyles.colors.layer1light,
+        minWidth: 100
     },
     flat: {
         backgroundColor: 'transparent'
