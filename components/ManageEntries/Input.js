@@ -35,7 +35,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   label: {
-    fontSize: 12, 
+    fontSize: 16,
+    fontWeight: "bold",
     color: GlobalStyles.colors.dark1,
     marginBottom: 4,
   },
@@ -48,5 +49,10 @@ const styles = StyleSheet.create({
   },
   invalidInput: {
     color: GlobalStyles.colors.errorText,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: GlobalStyles.colors.dark1,
   }
 });

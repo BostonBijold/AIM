@@ -129,13 +129,6 @@ function submitHandler() {
             <Button style={styles.button} onPress={submitHandler}>{submitButtonLable}</Button>
         </View>
       </View>
-      {/* <View style={styles.buttonContainer}>
-  <IconButton
-    icon={"add"}
-    size={50}
-    color={GlobalStyles.colors.dark1}
-  ></IconButton>
-</View> */}
     </View>
   );
 }
@@ -161,6 +154,7 @@ const styles = StyleSheet.create({
     marginVertical: 24,
     textAlign: "center",
   },
+  //Limit title input char limit.
   buttonContainer: {
     borderColor: GlobalStyles.colors.layer1,
     borderRadius: 8,

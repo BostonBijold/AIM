@@ -15,7 +15,7 @@ function GoalItem({ id,
   const navigation = useNavigation();
 
   function goalPressHandler() {
-    navigation.navigate("Manage Goal", {goalId: id });
+    navigation.navigate("GoalDetails", {goalId: id });
   }
 
   return (
