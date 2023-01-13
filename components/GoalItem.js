@@ -4,29 +4,8 @@ import { getFormatedDate } from "../util/date";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-function IconDisplay(isCompleted) {
-  let icon = "";
-  if (isCompleted === true) {
-    icon = "checkbox";
-  } else {
-    icon = "close";
-  }
-  return <Ionicons name={icon} />;
-  // let icon = ''
-  // if (isComplete === true) {
-  //     icon = 'checkmark'
-  // } else {
-  //     icon = 'checkmark'
-  // }
-  // below are attemts at inline icon changes.
-  //           <Ionicons name={iconDisplay(isCompleted)} />
-  //          {isCompleted ? <Ionicons name={'checkbox'} /> : <Ionicons name={'close'} /> }
 
-  //build a external function? why? it should work on the same page without a different file..
-  //Build a component!
-}
-
-function GoalItem({
+function GoalItem({ id,
   title,
   isComplete,
   willDescription,
@@ -36,7 +15,7 @@ function GoalItem({
   const navigation = useNavigation();
 
   function goalPressHandler() {
-    navigation.navigate("Manage Goal");
+    navigation.navigate("Manage Goal", {goalId: id });
   }
 
   return (
@@ -90,14 +69,15 @@ const styles = StyleSheet.create({
   goalContainer: {
     //padding: 12,
     marginVertical: 8,
+    marginHorizontal: 12,
     backgroundColor: GlobalStyles.colors.layer1,
     flexDirection: "column",
     justifyContent: "space-between",
     borderRadius: 8,
     shadowColor: GlobalStyles.colors.dark1,
-    shadowRadius: 4,
+    shadowRadius: 8,
     shadowOffset: { width: 1, height: 1 },
-    shadowOpacity: 0.05,
+    shadowOpacity: 0.35,
   },
   textBase: {
     color: GlobalStyles.colors.text1,
@@ -105,7 +85,7 @@ const styles = StyleSheet.create({
   completeContainer: {
     paddingHorizontal: 12,
     paddingVertical: 4,
-    backgroundColor: "#fff",
+    backgroundColor: GlobalStyles.colors.background,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 8,
@@ -130,6 +110,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: "center",
     justifyContent: "space-between",
+    shadowColor: GlobalStyles.colors.dark1,
+    shadowRadius: 8,
+    shadowOffset: { width: 1, height: 1 },
+    shadowOpacity: 0.35,
   },
   detailsContainer: {
     padding: 12,

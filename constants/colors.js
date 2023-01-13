@@ -14,6 +14,6 @@ export const GlobalStyles = {
 
         text1: '#F0EFDB',
 
-        errorText: '#FFD885'
+        errorText: '#f44336'
     }
 };
