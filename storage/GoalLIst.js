@@ -2,24 +2,34 @@ import { FlatList, StyleSheet, Text, View } from "react-native";
 import GoalItem from "../components/GoalItem";
 import IconButton from "../components/UI/IconButton";
 import { GlobalStyles } from "../constants/colors";
+import { useNavigation } from "@react-navigation/native";
 
 function renderGoalItem(itemData) {
   return <GoalItem {...itemData.item} />;
 }
 
 function GoalList({ goals }) {
+  const navigation = useNavigation();
+
+  function AddItem() {
+    navigation.navigate("Manage Goal");
+  }
+
   return (
     <View style={styles.container}>
       <FlatList
         data={goals}
         renderItem={renderGoalItem}
         keyExtractor={(item) => item.id}
-        ListFooterComponent={<IconButton
-          icon={"add"}
-          size={30}
-          color={GlobalStyles.colors.dark1}
-          style={styles.buttonContainer}
-        ></IconButton>}
+        ListFooterComponent={
+          <IconButton
+            icon={"add"}
+            size={30}
+            color={GlobalStyles.colors.dark1}
+            style={styles.buttonContainer}
+            onPress={AddItem}
+          ></IconButton>
+        }
       />
     </View>
   );
@@ -39,7 +49,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     backgroundColor: GlobalStyles.colors.layer1light,
     alignItems: "center",
-    marginTop: 4
+    marginTop: 4,
   },
 });
 

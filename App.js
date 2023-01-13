@@ -16,6 +16,7 @@ import DailyFocus from "./screens/DailyFocus";
 import { GlobalStyles } from "./constants/colors";
 import IconButton from "./components/UI/IconButton";
 import GoalContextProvider from "./storage/goal-context";
+import GoalDetails from "./screens/GoalDetails";
 
 const BottomTabs = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -104,6 +105,7 @@ export default function App() {
           }} />
           <Stack.Screen name="Manage Task" component={ManageTask} />
           <Stack.Screen name="Information" component={Information} />
+          <Stack.Screen name="GoalDetails" component={GoalDetails} />
         </Stack.Navigator>
       </NavigationContainer>
       </GoalContextProvider>
