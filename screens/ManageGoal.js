@@ -35,7 +35,17 @@ function ManageGoals({ route, navigation }) {
    if (isEditing) {
     goalsCtx.updateGoal(editedGoalId, goalData);
    } else {
-    goalsCtx.addGoal(goalData);
+    //goalsCtx.addGoal(goalData);
+    goalsCtx.addGoal({
+      id: "T1",
+      title: "test Training",
+      willDescription: "test add ",
+      whyDescription: "see it work.",
+      deadline: new Date("2023-07-01"),
+      isComplete: false,
+      createdAt: new Date("2023-01-07"),
+    
+    })
    }
    navigation.goBack();
   }
@@ -67,6 +77,7 @@ function ManageGoals({ route, navigation }) {
         <GoalsForm onCancel={cancelHandler}
         onSubmit={confirmHandler}
         submitButtonLable={isEditing ? 'Update' : 'Add'}
+        defaultValues={selectedGoal}
         />
     </View>
   );

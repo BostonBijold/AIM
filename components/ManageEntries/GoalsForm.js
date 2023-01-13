@@ -61,8 +61,8 @@ function submitHandler() {
             return{
             title: {value: curInputs.title.value, isValid: titleIsValid}, 
             willDescription: {value: curInputs.willDescription.value, isValid: willDescriptionIsValid},
-            whyDescription: { value: curInputs.whyDescription.value, isValid: willDescriptionIsValid},
-            deadline: { value: curInputs.deadline.value, isValid, deadlineIsValid}
+            whyDescription: { value: curInputs.whyDescription.value, isValid: whyDescriptionIsValid},
+            deadline: { value: curInputs.deadline.value, isValid: deadlineIsValid}
             };
         });
         return;
@@ -84,7 +84,7 @@ function submitHandler() {
       <Input
           style={styles.rowInput}
           label="Title:"
-          invalid={!inputs.willDescription}
+          invalid={!inputs.willDescription.isValid}
           textInputConfig={{
             onChangeText: inputChangedHandler.bind(this, 'title'),
             value: inputs.title.value
@@ -93,7 +93,7 @@ function submitHandler() {
         <Input
           style={styles.rowInput}
           label="I will:"
-          invalid={!inputs.willDescription}
+          invalid={!inputs.willDescription.isValid}
           textInputConfig={{
             onChangeText: inputChangedHandler.bind(this, 'willDescription'),
             value: inputs.willDescription.value
@@ -102,7 +102,7 @@ function submitHandler() {
                 <Input
           style={styles.rowInput}
           label="So that:"
-          invalid={!inputs.willDescription}
+          invalid={!inputs.willDescription.isValid}
           textInputConfig={{
             onChangeText: inputChangedHandler.bind(this, 'whyDescription'),
             value: inputs.whyDescription.value
@@ -116,14 +116,14 @@ function submitHandler() {
           textInputConfig={{
             placeholder: "YYYY-MM-DD",
             maxLength: 10,
-            onChangeText: inputChangedHandler.bind(this, "date"),
+            onChangeText: inputChangedHandler.bind(this, "deadline"),
             value: inputs.deadline.value,
           }}
         />
         {formIsInvalid && <Text style={styles.errorText}> Invalid Entry </Text>}
         <View style={styles.buttonsContainer}>
             <Button style={styles.button} onPress={onCancel}>Cancel</Button>
-            <Button style={styles.button} onPress={onSubmit}>{submitButtonLable}</Button>
+            <Button style={styles.button} onPress={submitHandler}>{submitButtonLable}</Button>
         </View>
       </View>
       {/* <View style={styles.buttonContainer}>
