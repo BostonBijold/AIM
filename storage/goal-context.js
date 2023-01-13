@@ -8,7 +8,7 @@ const DUMMY_GOALS = [
     whyDescription: "I can track my goals and lear Agile and development.",
     deadline: new Date("2024-01-01"),
     isComplete: false,
-    createdAt: new Date("2023-01-07"),
+    //createdAt: new Date("2023-01-07"),
   },
   {
     id: "g2",
@@ -17,7 +17,7 @@ const DUMMY_GOALS = [
     whyDescription: "we can stop spending money on dipers.",
     deadline: new Date("2023-07-01"),
     isComplete: false,
-    createdAt: new Date("2023-01-07"),
+    //createdAt: new Date("2023-01-07"),
   },
   {
     id: "g3",
@@ -26,7 +26,7 @@ const DUMMY_GOALS = [
     whyDescription: "I can be more physically fit and a better Boston.",
     deadline: new Date("2023-01-01"),
     isComplete: true,
-    createdAt: new Date("2022-01-01"),
+    //createdAt: new Date("2022-01-01"),
   },
   {
     id: "g4",
@@ -35,7 +35,7 @@ const DUMMY_GOALS = [
     whyDescription: "I have a better physique and a stonger body.",
     deadline: new Date("2024-01-01"),
     isComplete: false,
-    createdAt: new Date("2023-01-07"),
+    //createdAt: new Date("2023-01-07"),
   },
 ];
 

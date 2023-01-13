@@ -27,7 +27,7 @@ const [inputs, setInputs] = useState({
         isValid: true,
     },
     isComplete: {
-        value: defaultValues ? defaultValues.isComplete : "",
+        value: defaultValues ? defaultValues.isComplete : false,
         isValid: true,
     },
 });
@@ -49,6 +49,7 @@ function submitHandler() {
         willDescription: inputs.willDescription.value,
         whyDescription: inputs.whyDescription.value, 
         deadline: new Date(inputs.deadline.value),
+        isComplete: inputs.isComplete.value
     };
 
     const titleIsValid = goalData.title.trim().length > 0;
@@ -59,10 +60,12 @@ function submitHandler() {
     if (!titleIsValid || !willDescriptionIsValid || !whyDescriptionIsValid || !deadlineIsValid) {
         setInputs((curInputs) => {
             return{
+            id: {value: curInputs.id.value},
             title: {value: curInputs.title.value, isValid: titleIsValid}, 
             willDescription: {value: curInputs.willDescription.value, isValid: willDescriptionIsValid},
             whyDescription: { value: curInputs.whyDescription.value, isValid: whyDescriptionIsValid},
-            deadline: { value: curInputs.deadline.value, isValid: deadlineIsValid}
+            deadline: { value: curInputs.deadline.value, isValid: deadlineIsValid},
+            isComplete: {value: curInputs.isComplete.value}
             };
         });
         return;

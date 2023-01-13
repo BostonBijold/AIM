@@ -10,22 +10,18 @@ function renderGoalItem(itemData) {
 function GoalList({ goals }) {
   return (
     <View style={styles.container}>
-    <FlatList
-      data={goals}
-      renderItem={renderGoalItem}
-      keyExtractor={(item) => item.id}
-    />
-    <View style={styles.buttonAlignment}>
-    <View style={styles.buttonContainer}>
-          <IconButton
+      <FlatList
+        data={goals}
+        renderItem={renderGoalItem}
+        keyExtractor={(item) => item.id}
+        ListFooterComponent={<IconButton
           icon={"add"}
           size={30}
           color={GlobalStyles.colors.dark1}
-        ></IconButton>
-        </View>
-        </View>
+          style={styles.buttonContainer}
+        ></IconButton>}
+      />
     </View>
-
   );
 }
 
@@ -36,21 +32,15 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     padding: 2,
     flex: 1,
-    
   },
   buttonContainer: {
     borderColor: GlobalStyles.colors.layer1,
     borderRadius: 8,
     borderWidth: 2,
     backgroundColor: GlobalStyles.colors.layer1light,
-    width: '100%',
-    justifyContent: "center",
     alignItems: "center",
-
+    marginTop: 4
   },
-  buttonAlignment: {
-    alignItems: 'center'
-  }
 });
 
-//Pass a onPress to IconButton to navigate to a Manage goal screen. This will free up the top right for info. 
+//Pass a onPress to IconButton to navigate to a Manage goal screen. This will free up the top right for info.

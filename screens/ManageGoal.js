@@ -16,7 +16,7 @@ function ManageGoals({ route, navigation }) {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: isEditing ? "Goal Title" : "Add Goal",
+      title: isEditing ? "Edit Goal" : "Add Goal",
     });
   }, [navigation, isEditing]);
 
@@ -33,19 +33,22 @@ function ManageGoals({ route, navigation }) {
 
   function confirmHandler(goalData) {
    if (isEditing) {
+    console.log(goalData);
     goalsCtx.updateGoal(editedGoalId, goalData);
    } else {
-    //goalsCtx.addGoal(goalData);
-    goalsCtx.addGoal({
-      id: "T1",
-      title: "test Training",
-      willDescription: "test add ",
-      whyDescription: "see it work.",
-      deadline: new Date("2023-07-01"),
-      isComplete: false,
-      createdAt: new Date("2023-01-07"),
+    console.log(goalData);
+    goalsCtx.addGoal(goalData);
+
+    // goalsCtx.addGoal({
+    //   id: "T1",
+    //   title: "test Training",
+    //   willDescription: "test add ",
+    //   whyDescription: "see it work.",
+    //   deadline: new Date("2023-07-01"),
+    //   isComplete: false,
+    //   //createdAt: new Date("2023-01-07"),
     
-    })
+    // })
    }
    navigation.goBack();
   }
@@ -114,39 +117,4 @@ const styles = StyleSheet.create({
 //set the title of the goal as the title on the card or 'add goal'.
 // trash and complete goal icons need to be at the top of the form .
 
-{
-  /* <View style={styles.container}>
-<View style={styles.contentContainer}>
-  <Text>I will: </Text>
-  <TextInput />
-  <Text>so that: </Text>
-  <TextInput />
-  <Text>By: </Text>
-  <TextInput />
-</View>
-<View style={styles.buttonContainer}>
-  <IconButton
-    icon={"add"}
-    size={50}
-    color={GlobalStyles.colors.dark1}
-  ></IconButton>
-</View>
-{isEditing && (
-  <View style={styles.completeCancel}>
-    <IconButton
-      icon={"trash"}
-      size={50}
-      color={GlobalStyles.colors.dark1}
-      onPress={closeHandler}
-    />
-    <IconButton
-      icon={"checkbox"}
-      size={50}
-      color={GlobalStyles.colors.dark1}
-      onPress={closeHandler}
-    />
-  </View>
-)}
 
-</View> */
-}
