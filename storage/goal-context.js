@@ -5,7 +5,7 @@ const DUMMY_GOALS = [
     id: "g1",
     title: "Goal App",
     willDescription: "create a goal tracking app",
-    whyDescription: "I can track my goals, learn Agile, and React Native.",
+    whyDescription: "I can track my goals, learn Agile, and React.",
     deadline: new Date("2024-01-01"),
     isComplete: false,
     //createdAt: new Date("2023-01-07"),

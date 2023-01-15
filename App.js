@@ -123,7 +123,13 @@ export default function App() {
                   presentation: "modal",
                 }}
               />
-              <Stack.Screen name="Manage Task" component={ManageTask} />
+              <Stack.Screen
+                name="Manage Task"
+                component={ManageTask}
+                options={{
+                  presentation: "modal",
+                }}
+              />
               <Stack.Screen name="Information" component={Information} />
               <Stack.Screen
                 name="GoalDetails"

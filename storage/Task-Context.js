@@ -30,11 +30,11 @@ const DUMMY_TASKS = [
  //update
 export const TaskContext = createContext({
   tasks: [],
-  addTask: (title, willDescription, whyDescription, deadline) => {},
+  addTask: ( goalId, description) => {},
   deleteTask: (id) => {},
   updateTask: (
     id,
-    { title, willDescription, whyDescription, deadline, isComplete }
+    { goalId, description, isComplete }
   ) => {},
 });
 

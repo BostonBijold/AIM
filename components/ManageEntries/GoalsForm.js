@@ -60,7 +60,6 @@ function submitHandler() {
     if (!titleIsValid || !willDescriptionIsValid || !whyDescriptionIsValid || !deadlineIsValid) {
         setInputs((curInputs) => {
             return{
-            id: {value: curInputs.id.value},
             title: {value: curInputs.title.value, isValid: titleIsValid}, 
             willDescription: {value: curInputs.willDescription.value, isValid: willDescriptionIsValid},
             whyDescription: { value: curInputs.whyDescription.value, isValid: whyDescriptionIsValid},

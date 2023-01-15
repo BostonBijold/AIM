@@ -1,67 +1,81 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View, Alert } from "react-native";
 import { GlobalStyles } from "../constants/colors";
 import { getFormatedDate } from "../util/date";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { TaskContext } from "../storage/Task-Context";
+import { useContext } from "react";
 
-function TaskItem({
-  id,
-  goalId,
-  isComplete,
-  description,
-}) {
+function TaskItem({ id, goalId, isComplete, description }) {
   const navigation = useNavigation();
+  const taskCtx = useContext(TaskContext);
 
-  function goalPressHandler() {
-    navigation.navigate("GoalDetails", { goalId: id });
+  function completeTask() {
+    taskCtx.updateTask(id, {
+      goalId: goalId,
+      isComplete: true,
+      description: description,
+    });
+  }
+  function activateTask() {
+    taskCtx.updateTask(id, {
+      goalId: goalId,
+      isComplete: false,
+      description: description,
+    });
+  }
+
+  function editTask() {
+    navigation.navigate("Manage Task", { taskId: id });
+  }
+
+  function taskPressHandler() {
+    if (isComplete) {
+      Alert.alert("Edit Task or reactivate?", "", [
+        { text: "Edit", onPress: editTask },
+        { text: "Activate", onPress: activateTask },
+      ]);
+    } else {
+      Alert.alert("Edit Task or mark as Complete?", "", [
+        { text: "Edit", onPress: editTask },
+        { text: "Complete", onPress: completeTask },
+      ]);
+    }
     // update to task something
   }
 
   return (
     <Pressable
-      onPress={goalPressHandler}
+      onPress={taskPressHandler}
       style={({ pressed }) => pressed && styles.pressed}
     >
-      <View style={styles.goalContainer}>
+      <View style={styles.taskContainer}>
         <View style={styles.titleContainer}>
-           <View style={styles.completeContainer}>
-            {isComplete && (
+          {isComplete && (
+            <View style={styles.completeContainer}>
               <Ionicons
                 name={"checkmark"}
                 color={GlobalStyles.colors.dark1}
                 size={30}
               />
-            )}
-            {isComplete || (
+            </View>
+          )}
+          {/* In separate if checks for future swipe to complete changes.  */}
+          {isComplete || (
+            <View style={styles.completeContainer}>
               <Ionicons
                 name={"close"}
                 color={GlobalStyles.colors.dark1}
                 size={30}
               />
-            )}
-          </View> 
+            </View>
+          )}
           {/* Add Swipe on task to swipe incomplete to complete */}
           <View style={styles.detailsContainer}>
-          <Text style={[styles.textBase, styles.descriptionContainer]}>
-            {description}
-          </Text>
+            <Text style={[styles.textBase, styles.descriptionContainer]}>
+              {description}
+            </Text>
           </View>
-          {/* <View style={styles.completeContainer}>
-            {isComplete && (
-              <Ionicons
-                name={"checkmark"}
-                color={GlobalStyles.colors.dark1}
-                size={30}
-              />
-            )}
-            {isComplete || (
-              <Ionicons
-                name={"close"}
-                color={GlobalStyles.colors.dark1}
-                size={30}
-              />
-            )}
-          </View>  */}
         </View>
       </View>
     </Pressable>
@@ -71,11 +85,11 @@ function TaskItem({
 export default TaskItem;
 
 const styles = StyleSheet.create({
-  goalContainer: {
+  taskContainer: {
     //padding: 12,
     marginVertical: 8,
     marginHorizontal: 12,
-    backgroundColor: GlobalStyles.colors.layer1,
+    backgroundColor: GlobalStyles.colors.white,
     flexDirection: "column",
     justifyContent: "space-between",
     borderRadius: 8,
@@ -85,8 +99,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.35,
   },
   textBase: {
-    color: GlobalStyles.colors.text1,
-    textAlign:"center"
+    color: GlobalStyles.colors.dark2,
+    textAlign: "center",
+    fontSize: 15
   },
   completeContainer: {
     paddingHorizontal: 12,
@@ -106,14 +121,12 @@ const styles = StyleSheet.create({
   pressed: {
     opacity: 0.75,
   },
-  descriptorText: {
-    color: GlobalStyles.colors.dark1,
-    fontSize: 18,
-  },
   titleContainer: {
     flexDirection: "row",
-    backgroundColor: GlobalStyles.colors.layer2,
+    backgroundColor: GlobalStyles.colors.white,
     borderRadius: 8,
+    borderColor: GlobalStyles.colors.layer1,
+    borderWidth: 3,
     alignItems: "center",
     //justifyContent: "space-between",
     shadowColor: GlobalStyles.colors.dark1,
@@ -123,12 +136,5 @@ const styles = StyleSheet.create({
   },
   detailsContainer: {
     padding: 12,
-  },
-  title: {
-    fontSize: 24,
-  },
-  dateContainer: {
-    margin: 8,
-    minWidth: 30,
   },
 });

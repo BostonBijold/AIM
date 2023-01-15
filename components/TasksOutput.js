@@ -43,5 +43,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: GlobalStyles.colors.white,
+    borderRadius: 8
   },
 });

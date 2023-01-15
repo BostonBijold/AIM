@@ -10,14 +10,13 @@ import TasksOutput from "../components/TasksOutput";
 import { TaskContext } from "../storage/Task-Context";
 import { NavigationHelpersContext } from "@react-navigation/native";
 
-
 function GoalDetails({ route, navigation }) {
   const goalsCtx = useContext(GoalContext);
   const editedGoalId = route.params?.goalId;
   const isEditing = !!editedGoalId;
   const selectedGoal = goalsCtx.goals.find((goal) => goal.id === editedGoalId);
 
-  //Task filter 
+  //Task filter
   const taskCtx = useContext(TaskContext);
 
   // const editedTaskId = route.params?.goalId;
@@ -42,7 +41,7 @@ function GoalDetails({ route, navigation }) {
 
   function editGoalHandler() {
     navigation.navigate("Manage Goal", { goalId: selectedGoal.id });
-    // Use goal id to open manage goal screen 
+    // Use goal id to open manage goal screen
   }
 
   function confirmHandler(goalData) {
@@ -70,6 +69,7 @@ function GoalDetails({ route, navigation }) {
           size={40}
           color={GlobalStyles.colors.dark1}
           onPress={editGoalHandler}
+          //title={'Edit'}
         />
         <Text style={styles.titles}>{selectedGoal.title}</Text>
         <IconButton
@@ -77,6 +77,8 @@ function GoalDetails({ route, navigation }) {
           size={40}
           color={GlobalStyles.colors.dark1}
           onPress={completeGoalHandler}
+          //title={'Complete'}
+
           // create conditional view for completed, incomplete and incomplete with unfinished tasks
           // onpress alert for can complete or want to complete
         />
@@ -87,12 +89,15 @@ function GoalDetails({ route, navigation }) {
         <Text style={styles.titles}>so that</Text>
         <Text style={styles.detailsText}>{selectedGoal.whyDescription}</Text>
         <Text style={styles.titles}>by</Text>
-        <Text style={styles.detailsText}>{getFormatedDate(selectedGoal.deadline)}</Text>
+        <Text style={styles.detailsText}>
+          {getFormatedDate(selectedGoal.deadline)}
+        </Text>
       </View>
-      
+      <View style={styles.titleContainer}>
+        <Text style={styles.titles}>Related Tasks</Text>
+      </View>
       {/* Ctx.tasks pulls the array, in a filter it will be removed.   */}
       <TasksOutput tasks={taskCtx.tasks} />
-      
     </View>
   );
 }
@@ -122,7 +127,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 8,
     backgroundColor: GlobalStyles.colors.white,
-    padding: 8
+    padding: 8,
   },
   titles: {
     fontSize: 24,
