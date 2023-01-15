@@ -26,6 +26,7 @@ function GoalItem({ id,
       <View style={styles.goalContainer}>
         <View style={styles.titleContainer}>
           <View style={styles.completeContainer}>
+            {/* update to a 'active' : 'completed at data' */}
             {isComplete && (
               <Ionicons
                 name={"checkmark"}
@@ -70,7 +71,9 @@ const styles = StyleSheet.create({
     //padding: 12,
     marginVertical: 8,
     marginHorizontal: 12,
-    backgroundColor: GlobalStyles.colors.layer1,
+    backgroundColor: GlobalStyles.colors.white,
+    borderColor: GlobalStyles.colors.layer1,
+    borderWidth: 2,
     flexDirection: "column",
     justifyContent: "space-between",
     borderRadius: 8,
@@ -80,7 +83,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.35,
   },
   textBase: {
-    color: GlobalStyles.colors.text1,
+    color: GlobalStyles.colors.dark1,
   },
   completeContainer: {
     paddingHorizontal: 12,
@@ -88,9 +91,11 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalStyles.colors.background,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 8,
+    //borderRadius: 8,
     height: 50,
     width: 50,
+    //borderBottomLeftRadius: 8,
+    borderTopLeftRadius: 6
   },
   descriptionContainer: {
     minWidth: 100,
@@ -106,14 +111,17 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     flexDirection: "row",
-    backgroundColor: GlobalStyles.colors.layer2,
-    borderRadius: 8,
+    backgroundColor: GlobalStyles.colors.white,
+    //borderRadius: 8,
     alignItems: "center",
     justifyContent: "space-between",
     shadowColor: GlobalStyles.colors.dark1,
     shadowRadius: 8,
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.35,
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8
+    
   },
   detailsContainer: {
     padding: 12,

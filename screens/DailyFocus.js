@@ -16,13 +16,18 @@ import TaskList from "../storage/TaskList";
 
 function DailyFocus() {
   const taskCtx = useContext(TaskContext);
+  const activeTasks = taskCtx.tasks.filter((task) => {
+    return task.isComplete === false;
+  });
 
   return (
-    <TasksOutput tasks={taskCtx.tasks} /> 
+    
     // <View>
     //   <Text>Daily Focus: </Text>
     //   <Text>Enter task for the day or select previously entered task</Text>
     // </View>
+    <TasksOutput tasks={activeTasks} /> 
+
   );
 }
 

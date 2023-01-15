@@ -35,8 +35,27 @@ function GoalDetails({ route, navigation }) {
   }
 
   function completeGoalHandler() {
-    // Update isComplete
-    navigation.goBack();
+    if (selectedGoal.isComplete) {
+      const goalData = {
+        title: selectedGoal.title,
+        willDescription: selectedGoal.willDescription,
+        whyDescription: selectedGoal.whyDescription,
+        deadline: new Date(selectedGoal.deadline),
+        isComplete: false,
+      };
+
+      goalsCtx.updateGoal(selectedGoal.id, goalData);
+    } else {
+      const goalData = {
+        title: selectedGoal.title,
+        willDescription: selectedGoal.willDescription,
+        whyDescription: selectedGoal.whyDescription,
+        deadline: new Date(selectedGoal.deadline),
+        isComplete: true,
+      };
+
+      goalsCtx.updateGoal(selectedGoal.id, goalData);
+    }
   }
 
   function editGoalHandler() {
@@ -72,16 +91,24 @@ function GoalDetails({ route, navigation }) {
           //title={'Edit'}
         />
         <Text style={styles.titles}>{selectedGoal.title}</Text>
-        <IconButton
+        {selectedGoal.isComplete && (
+          <IconButton
           icon={"checkbox"}
           size={40}
           color={GlobalStyles.colors.dark1}
           onPress={completeGoalHandler}
-          //title={'Complete'}
+          />
+        )}
+        {selectedGoal.isComplete ||(
+        <IconButton
+          icon={"close"}
+          size={40}
+          color={GlobalStyles.colors.dark1}
+          onPress={completeGoalHandler}
 
           // create conditional view for completed, incomplete and incomplete with unfinished tasks
           // onpress alert for can complete or want to complete
-        />
+        /> )}
       </View>
       <View style={styles.detailsContainer}>
         <Text style={styles.titles}>I Will</Text>
@@ -98,6 +125,22 @@ function GoalDetails({ route, navigation }) {
       </View>
       {/* Ctx.tasks pulls the array, in a filter it will be removed.   */}
       <TasksOutput tasks={taskCtx.tasks} />
+      {/* <View style={styles.completeContainer}>
+        {isComplete && (
+          <Ionicons
+            name={"checkmark"}
+            color={GlobalStyles.colors.dark1}
+            size={30}
+          />
+        )}
+        {isComplete || (
+          <Ionicons
+            name={"close"}
+            color={GlobalStyles.colors.dark1}
+            size={30}
+          />
+        )}
+      </View> */}
     </View>
   );
 }
@@ -118,7 +161,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 2,
     backgroundColor: GlobalStyles.colors.layer1light,
-    width: 200,
+    // width: 200,
     justifyContent: "center",
     alignItems: "center",
     margin: 8,
