@@ -6,15 +6,21 @@ import IconButton from "../components/UI/IconButton";
 import { GlobalStyles } from "../constants/colors";
 import { GoalContext } from "../storage/goal-context";
 import { getFormatedDate } from "../util/date";
+import TasksOutput from "../components/TasksOutput";
+import { TaskContext } from "../storage/Task-Context";
+import { NavigationHelpersContext } from "@react-navigation/native";
 
 
 function GoalDetails({ route, navigation }) {
   const goalsCtx = useContext(GoalContext);
-
   const editedGoalId = route.params?.goalId;
   const isEditing = !!editedGoalId;
-
   const selectedGoal = goalsCtx.goals.find((goal) => goal.id === editedGoalId);
+
+  //Task filter 
+  const taskCtx = useContext(TaskContext);
+
+  // const editedTaskId = route.params?.goalId;
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -30,7 +36,13 @@ function GoalDetails({ route, navigation }) {
   }
 
   function completeGoalHandler() {
+    // Update isComplete
     navigation.goBack();
+  }
+
+  function editGoalHandler() {
+    navigation.navigate("Manage Goal", { goalId: selectedGoal.id });
+    // Use goal id to open manage goal screen 
   }
 
   function confirmHandler(goalData) {
@@ -52,37 +64,38 @@ function GoalDetails({ route, navigation }) {
 
   return (
     <View style={styles.container}>
-        <View style={styles.titleContainer}>
-            <Text style={styles.titles}>{selectedGoal.title}</Text>
-        </View>
-      <Text style={styles.titles}>I Will</Text>
-      <Text>{selectedGoal.willDescription}</Text>
-      <Text style={styles.titles}>so that</Text>
-      <Text>{selectedGoal.whyDescription}</Text>
-      <Text style={styles.titles}>by</Text>
-      <Text >{getFormatedDate(selectedGoal.deadline)}</Text>
-
-    
-          {/* {isEditing && (
-        <View style={styles.completeCancel}>
-          <IconButton
-            icon={"trash"}
-            size={50}
-            color={GlobalStyles.colors.dark1}
-            onPress={deleteGoalHandler}
-          />
-          <IconButton
-            icon={"checkbox"}
-            size={50}
-            color={GlobalStyles.colors.dark1}
-            onPress={completeGoalHandler}
-          />
-        </View>
-      )} */}
+      <View style={styles.titleContainer}>
+        <IconButton
+          icon={"create-outline"}
+          size={40}
+          color={GlobalStyles.colors.dark1}
+          onPress={editGoalHandler}
+        />
+        <Text style={styles.titles}>{selectedGoal.title}</Text>
+        <IconButton
+          icon={"checkbox"}
+          size={40}
+          color={GlobalStyles.colors.dark1}
+          onPress={completeGoalHandler}
+          // create conditional view for completed, incomplete and incomplete with unfinished tasks
+          // onpress alert for can complete or want to complete
+        />
       </View>
+      <View style={styles.detailsContainer}>
+        <Text style={styles.titles}>I Will</Text>
+        <Text style={styles.detailsText}>{selectedGoal.willDescription}</Text>
+        <Text style={styles.titles}>so that</Text>
+        <Text style={styles.detailsText}>{selectedGoal.whyDescription}</Text>
+        <Text style={styles.titles}>by</Text>
+        <Text style={styles.detailsText}>{getFormatedDate(selectedGoal.deadline)}</Text>
+      </View>
+      
+      {/* Ctx.tasks pulls the array, in a filter it will be removed.   */}
+      <TasksOutput tasks={taskCtx.tasks} />
+      
+    </View>
   );
 }
-
 export default GoalDetails;
 
 const styles = StyleSheet.create({
@@ -105,18 +118,26 @@ const styles = StyleSheet.create({
     alignItems: "center",
     margin: 8,
   },
-  inputContainer: {
+  detailsContainer: {
     borderWidth: 2,
     borderRadius: 8,
+    backgroundColor: GlobalStyles.colors.white,
+    padding: 8
   },
   titles: {
     fontSize: 24,
     fontWeight: "bold",
     color: GlobalStyles.colors.dark1,
   },
+  detailsText: {
+    fontSize: 16,
+    color: GlobalStyles.colors.dark1,
+  },
   titleContainer: {
     //backgroundColor: GlobalStyles.colors.layer1,
-    alignItems: 'center'
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   goalContainer: {
     //padding: 12,

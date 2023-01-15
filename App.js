@@ -18,6 +18,7 @@ import IconButton from "./components/UI/IconButton";
 import GoalContextProvider from "./storage/goal-context";
 import GoalDetails from "./screens/GoalDetails";
 import User from "./screens/User";
+import TaskContextProvider from "./storage/Task-Context";
 
 const BottomTabs = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -97,43 +98,45 @@ export default function App() {
   return (
     <>
       <StatusBar style="auto" />
-      <GoalContextProvider>
-        <NavigationContainer>
-          <Stack.Navigator
-            screenOptions={({ navigation }) => ({
-              headerStyle: { backgroundColor: GlobalStyles.colors.layer1 },
-              headerTintColor: "#fff",
-              // headerRight: ({ tintColor }) => (
-              //   <IconButton icon={"close"} size={30} color={tintColor}
-              //   onPress={() => {navigation.goBack()}} />
-              // ),
-            })}
-          >
-            <Stack.Screen
-              name="Back"
-              component={AgileLifeDevelopmentOverview}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Manage Goal"
-              component={ManageGoal}
-              options={{
-                presentation: "modal",
-              }}
-            />
-            <Stack.Screen name="Manage Task" component={ManageTask} />
-            <Stack.Screen name="Information" component={Information} />
-            <Stack.Screen
-              name="GoalDetails"
-              component={GoalDetails}
-              options={{
-                presentation: "modal",                
-              }}
-            />
-            <Stack.Screen name="User" component={User} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </GoalContextProvider>
+      <TaskContextProvider>
+        <GoalContextProvider>
+          <NavigationContainer>
+            <Stack.Navigator
+              screenOptions={({ navigation }) => ({
+                headerStyle: { backgroundColor: GlobalStyles.colors.layer1 },
+                headerTintColor: "#fff",
+                // headerRight: ({ tintColor }) => (
+                //   <IconButton icon={"close"} size={30} color={tintColor}
+                //   onPress={() => {navigation.goBack()}} />
+                // ),
+              })}
+            >
+              <Stack.Screen
+                name="Back"
+                component={AgileLifeDevelopmentOverview}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Manage Goal"
+                component={ManageGoal}
+                options={{
+                  presentation: "modal",
+                }}
+              />
+              <Stack.Screen name="Manage Task" component={ManageTask} />
+              <Stack.Screen name="Information" component={Information} />
+              <Stack.Screen
+                name="GoalDetails"
+                component={GoalDetails}
+                options={{
+                  presentation: "modal",
+                }}
+              />
+              <Stack.Screen name="User" component={User} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </GoalContextProvider>
+      </TaskContextProvider>
     </>
   );
 }
