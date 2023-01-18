@@ -33,10 +33,8 @@ function ManageGoals({ route, navigation }) {
 
   function confirmHandler(goalData) {
    if (isEditing) {
-    console.log(goalData);
     goalsCtx.updateGoal(editedGoalId, goalData);
    } else {
-    console.log(goalData);
     goalsCtx.addGoal(goalData);
 
    }

@@ -8,6 +8,8 @@ const DUMMY_GOALS = [
     whyDescription: "I can track my goals, learn Agile, and React.",
     deadline: new Date("2024-01-01"),
     isComplete: false,
+    completedTasks: 1,
+    totalTasks: 3,
     //createdAt: new Date("2023-01-07"),
   },
   {
@@ -18,6 +20,8 @@ const DUMMY_GOALS = [
     deadline: new Date("2023-07-01"),
     isComplete: false,
     //createdAt: new Date("2023-01-07"),
+    completedTasks: 0,
+    totalTasks: 1
   },
   {
     id: "g3",
@@ -27,6 +31,8 @@ const DUMMY_GOALS = [
     deadline: new Date("2023-01-01"),
     isComplete: true,
     //createdAt: new Date("2022-01-01"),
+    completedTasks: 7,
+    totalTasks: 7
   },
   {
     id: "g4",
@@ -36,6 +42,8 @@ const DUMMY_GOALS = [
     deadline: new Date("2024-01-01"),
     isComplete: false,
     //createdAt: new Date("2023-01-07"),
+    completedTasks: 0,
+    totalTasks: 0
   },
 ];
 
@@ -45,7 +53,7 @@ export const GoalContext = createContext({
   deleteGoal: (id) => {},
   updateGoal: (
     id,
-    { title, willDescription, whyDescription, deadline, isComplete }
+    { title, willDescription, whyDescription, deadline, isComplete, completedTasks, totalTasks }
   ) => {},
 });
 
@@ -60,6 +68,7 @@ function goalReducer(state, action) {
       );
       const updateableGoal = state[updateableGoalIndex];
       const updatedItem = { ...updateableGoal, ...action.payload.data };
+
       updatedGoals = [...state];
       updatedGoals[updateableGoalIndex] = updatedItem;
       return updatedGoals;

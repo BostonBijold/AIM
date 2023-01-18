@@ -18,6 +18,9 @@ function GoalDetails({ route, navigation }) {
 
   //Task filter
   const taskCtx = useContext(TaskContext);
+  const goalTasks = taskCtx.tasks.filter((task) => {
+    return task.goalId === editedGoalId;
+  });
 
   // const editedTaskId = route.params?.goalId;
 
@@ -65,10 +68,8 @@ function GoalDetails({ route, navigation }) {
 
   function confirmHandler(goalData) {
     if (isEditing) {
-      console.log(goalData);
       goalsCtx.updateGoal(editedGoalId, goalData);
     } else {
-      console.log(goalData);
       goalsCtx.addGoal(goalData);
     }
     navigation.goBack();
@@ -82,7 +83,7 @@ function GoalDetails({ route, navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.titleContainer}>
+      {/* <View style={styles.titleContainer}>
         <IconButton
           icon={"create-outline"}
           size={40}
@@ -109,9 +110,19 @@ function GoalDetails({ route, navigation }) {
           // create conditional view for completed, incomplete and incomplete with unfinished tasks
           // onpress alert for can complete or want to complete
         /> )}
-      </View>
+      </View> */}
       <View style={styles.detailsContainer}>
+        <View style={styles.titleContainer}>
         <Text style={styles.titles}>I Will</Text>
+        <IconButton
+          icon={"create-outline"}
+          size={30}
+          color={GlobalStyles.colors.dark1}
+          onPress={editGoalHandler}
+          style={styles.editButton}
+          //title={'Edit'}
+        />
+        </View>
         <Text style={styles.detailsText}>{selectedGoal.willDescription}</Text>
         <Text style={styles.titles}>so that</Text>
         <Text style={styles.detailsText}>{selectedGoal.whyDescription}</Text>
@@ -120,27 +131,11 @@ function GoalDetails({ route, navigation }) {
           {getFormatedDate(selectedGoal.deadline)}
         </Text>
       </View>
-      <View style={styles.titleContainer}>
-        <Text style={styles.titles}>Related Tasks</Text>
+      <View style={styles.taskTitleContainer}>
+        <Text style={styles.titles}>{selectedGoal.completedTasks} out of {selectedGoal.totalTasks} tasks complete </Text>
+        {/* if complete = total display complete goal option  */}
       </View>
-      {/* Ctx.tasks pulls the array, in a filter it will be removed.   */}
-      <TasksOutput tasks={taskCtx.tasks} />
-      {/* <View style={styles.completeContainer}>
-        {isComplete && (
-          <Ionicons
-            name={"checkmark"}
-            color={GlobalStyles.colors.dark1}
-            size={30}
-          />
-        )}
-        {isComplete || (
-          <Ionicons
-            name={"close"}
-            color={GlobalStyles.colors.dark1}
-            size={30}
-          />
-        )}
-      </View> */}
+      <TasksOutput tasks={goalTasks} />
     </View>
   );
 }
@@ -200,6 +195,16 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.35,
   },
+  taskTitleContainer: {
+    alignItems: "center",
+    padding: 12,
+
+  },
+  editButton: {
+    padding: 0, 
+    marginVertical: 0,
+    marginHorizontal: 0,
+},
 });
 
 //set the title of the goal as the title on the card or 'add goal'.

@@ -5,10 +5,16 @@ import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { TaskContext } from "../storage/Task-Context";
 import { useContext } from "react";
+import { GoalContext } from "../storage/goal-context";
 
 function TaskItem({ id, goalId, isComplete, description }) {
   const navigation = useNavigation();
   const taskCtx = useContext(TaskContext);
+  const goalsCtx = useContext(GoalContext);
+
+  const editedGoalId = goalId; //params? checks if a value is provided.
+  //const isEditing = !!editedGoalId;
+  const selectedGoal = goalsCtx.goals.find((goal) => goal.id === editedGoalId);
 
   function completeTask() {
     taskCtx.updateTask(id, {
@@ -16,12 +22,31 @@ function TaskItem({ id, goalId, isComplete, description }) {
       isComplete: true,
       description: description,
     });
+    goalsCtx.updateGoal(goalId, {
+      title: selectedGoal.title,
+      willDescription: selectedGoal.willDescription,
+      whyDescription: selectedGoal.whyDescription,
+      deadline: selectedGoal.deadline,
+      isComplete:  selectedGoal.isComplete,
+      completedTasks: selectedGoal.completedTasks + 1,
+      //totalTasks: selectedGoal.totalTasks +1
+    });
   }
   function activateTask() {
     taskCtx.updateTask(id, {
       goalId: goalId,
       isComplete: false,
       description: description,
+      
+    });
+    goalsCtx.updateGoal(goalId, {
+      title: selectedGoal.title,
+      willDescription: selectedGoal.willDescription,
+      whyDescription: selectedGoal.whyDescription,
+      deadline: selectedGoal.deadline,
+      isComplete:  selectedGoal.isComplete,
+      completedTasks: selectedGoal.completedTasks - 1,
+      //totalTasks: selectedGoal.totalTasks +1
     });
   }
 
@@ -101,7 +126,7 @@ const styles = StyleSheet.create({
   textBase: {
     color: GlobalStyles.colors.dark2,
     textAlign: "center",
-    fontSize: 15
+    fontSize: 15,
   },
   completeContainer: {
     paddingHorizontal: 12,
@@ -129,7 +154,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     alignItems: "center",
     //justifyContent: "space-between",
-
   },
   detailsContainer: {
     padding: 12,

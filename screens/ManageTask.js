@@ -3,15 +3,21 @@ import { StyleSheet, Text, View } from 'react-native';
 import TaskForm from '../components/ManageEntries/TaskForm';
 import IconButton from '../components/UI/IconButton';
 import { GlobalStyles } from '../constants/colors';
+import { GoalContext } from '../storage/goal-context';
 import { TaskContext } from '../storage/Task-Context';
 
+// tasks cannot be added if no goalId exists.... 
+// goal selection is a must for a simple app 
 
 function ManageTask({ route, navigation }) {
    const taskCtx = useContext(TaskContext);
+   const goalsCtx = useContext(GoalContext);
+
    const editedTaskId = route.params?.taskId;
    const isEditing = !!editedTaskId;
 
    const selectedTask = taskCtx.tasks.find(task => task.id === editedTaskId)
+
 
    useLayoutEffect(() => {
       navigation.setOptions({
@@ -23,15 +29,56 @@ function ManageTask({ route, navigation }) {
       navigation.goBack();
    }
 
+   function deleteTask() {
+    if (selectedTask.isComplete){
+      console.log('true test')
+      taskCtx.deleteTask(editedTaskId);
+      const selectedGoal = goalsCtx.goals.find((goal) => goal.id === selectedTask.goalId);
+      goalsCtx.updateGoal(selectedTask.goalId, {
+        title: selectedGoal.title,
+        willDescription: selectedGoal.willDescription,
+        whyDescription: selectedGoal.whyDescription,
+        deadline: selectedGoal.deadline,
+        isComplete:  selectedGoal.isComplete,
+        completedTasks: selectedGoal.completedTasks - 1,
+        totalTasks: selectedGoal.totalTasks -1
+      });
+    } else{
+      console.log('false test')
+      taskCtx.deleteTask(editedTaskId);
+      const selectedGoal = goalsCtx.goals.find((goal) => goal.id === selectedTask.goalId);
+      goalsCtx.updateGoal(selectedTask.goalId, {
+        title: selectedGoal.title,
+        willDescription: selectedGoal.willDescription,
+        whyDescription: selectedGoal.whyDescription,
+        deadline: selectedGoal.deadline,
+        isComplete:  selectedGoal.isComplete,
+        //completedTasks: selectedGoal.completedTasks - 1,
+        totalTasks: selectedGoal.totalTasks -1
+      });
+    }
+
+
+    navigation.goBack();
+   }
+
    function confirmHandler(taskData) {
       if (isEditing) {
-      console.log(taskData);
       taskCtx.updateTask(editedTaskId, taskData);
       } else {
-         console.log(taskData); 
          taskCtx.addTask(taskData);
+         const goalupdated = goalsCtx.goals.find((goal) => goal.id === taskData.goalId);
+         goalsCtx.updateGoal(taskData.goalId, {
+          title: goalupdated.title,
+          willDescription: goalupdated.willDescription,
+          whyDescription: goalupdated.whyDescription,
+          deadline: goalupdated.deadline,
+          isComplete:  goalupdated.isComplete,
+          //completedTasks: goalupdated.completedTasks + 1,
+          totalTasks: goalupdated.totalTasks +1
+        });
       }
-      navigation.goBack();
+          navigation.goBack();
    }
 
    return (
@@ -42,7 +89,7 @@ function ManageTask({ route, navigation }) {
             icon={"trash"}
             size={50}
             color={GlobalStyles.colors.dark1}
-            onPress={cancelHandler}
+            onPress={deleteTask}
           />
           <IconButton
             icon={"checkbox"}

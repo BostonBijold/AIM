@@ -98,8 +98,8 @@ export default function App() {
   return (
     <>
       <StatusBar style="auto" />
-      <TaskContextProvider>
-        <GoalContextProvider>
+      <GoalContextProvider>
+        <TaskContextProvider>
           <NavigationContainer>
             <Stack.Navigator
               screenOptions={({ navigation }) => ({
@@ -141,8 +141,8 @@ export default function App() {
               <Stack.Screen name="User" component={User} />
             </Stack.Navigator>
           </NavigationContainer>
-        </GoalContextProvider>
-      </TaskContextProvider>
+        </TaskContextProvider>
+      </GoalContextProvider>
     </>
   );
 }

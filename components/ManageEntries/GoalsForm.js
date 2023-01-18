@@ -30,6 +30,12 @@ const [inputs, setInputs] = useState({
         value: defaultValues ? defaultValues.isComplete : false,
         isValid: true,
     },
+    completedTasks: {
+      value: defaultValues ? defaultValues.completedTasks : 0, 
+    },
+    totalTasks: {
+      value: defaultValues ? defaultValues.totalTasks : 0, 
+    }
 });
 
 
@@ -49,7 +55,9 @@ function submitHandler() {
         willDescription: inputs.willDescription.value,
         whyDescription: inputs.whyDescription.value, 
         deadline: new Date(inputs.deadline.value),
-        isComplete: inputs.isComplete.value
+        isComplete: inputs.isComplete.value, 
+        completedTasks: inputs.completedTasks.value,
+        totalTasks: inputs.totalTasks.value
     };
 
     const titleIsValid = goalData.title.trim().length > 0;
