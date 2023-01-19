@@ -1,54 +1,9 @@
 import { createContext, useReducer } from "react";
 
-const DUMMY_GOALS = [
-  {
-    id: "g1",
-    title: "Goal App",
-    willDescription: "create a goal tracking app",
-    whyDescription: "I can track my goals, learn Agile, and React.",
-    deadline: new Date("2024-01-01"),
-    isComplete: false,
-    completedTasks: 1,
-    totalTasks: 3,
-    //createdAt: new Date("2023-01-07"),
-  },
-  {
-    id: "g2",
-    title: "Potty Training",
-    willDescription: "potty train Harrison",
-    whyDescription: "we can stop spending money on diapers.",
-    deadline: new Date("2023-07-01"),
-    isComplete: false,
-    //createdAt: new Date("2023-01-07"),
-    completedTasks: 0,
-    totalTasks: 1
-  },
-  {
-    id: "g3",
-    title: "Gym Habit",
-    willDescription: "make going to the gym a habit",
-    whyDescription: "I can be more physically fit and practice discipline.",
-    deadline: new Date("2023-01-01"),
-    isComplete: true,
-    //createdAt: new Date("2022-01-01"),
-    completedTasks: 7,
-    totalTasks: 7
-  },
-  {
-    id: "g4",
-    title: "5 Lbs",
-    willDescription: "gain 5 pounds of muscle",
-    whyDescription: "I have a better physique and a stonger body.",
-    deadline: new Date("2024-01-01"),
-    isComplete: false,
-    //createdAt: new Date("2023-01-07"),
-    completedTasks: 0,
-    totalTasks: 0
-  },
-];
 
 export const GoalContext = createContext({
   goals: [],
+  setGoals: [], 
   addGoal: (title, willDescription, whyDescription, deadline) => {},
   deleteGoal: (id) => {},
   updateGoal: (
@@ -59,9 +14,15 @@ export const GoalContext = createContext({
 
 function goalReducer(state, action) {
   switch (action.type) {
+    case 'SET': 
+      const inverted = action.payload.reverse(); //reverses the order of the goals from latest enered to first entered. 
+      // return inverted;
+      return action.payload;
     case "ADD":
-      const id = new Date().toString() + Math.random().toString();
-      return [{ ...action.payload, id: id }, ...state];
+    
+      //const id = new Date().toString() + Math.random().toString();
+      return [action.payload, ...state];
+      //return [{ ...action.payload, id: id }, ...state]; - updated by http connection 
     case "UPDATE":
       const updateableGoalIndex = state.findIndex(
         (goal) => goal.id === action.payload.id
@@ -79,8 +40,14 @@ function goalReducer(state, action) {
   }
 }
 
+
+
 function GoalContextProvider({ children }) {
-  const [goalsState, dispatch] = useReducer(goalReducer, DUMMY_GOALS);
+  const [goalsState, dispatch] = useReducer(goalReducer, []);
+
+  function setGoals(goals) {
+    dispatch({type: 'SET', payload: goals});
+  }
 
   function addGoal(goalData) {
     dispatch({ type: "ADD", payload: goalData });
@@ -96,6 +63,7 @@ function GoalContextProvider({ children }) {
 
   const value = {
     goals: goalsState,
+    setGoals: setGoals,
     addGoal: addGoal,
     deleteGoal: deleteGoal,
     updateGoal: updateGoal,

@@ -16,6 +16,7 @@ function GoalDetails({ route, navigation }) {
   const isEditing = !!editedGoalId;
   const selectedGoal = goalsCtx.goals.find((goal) => goal.id === editedGoalId);
 
+
   //Task filter
   const taskCtx = useContext(TaskContext);
   const goalTasks = taskCtx.tasks.filter((task) => {
@@ -34,7 +35,7 @@ function GoalDetails({ route, navigation }) {
 
   function deleteGoalHandler() {
     goalsCtx.deleteGoal(editedGoalId);
-    navigation.goback();
+    navigation.goBack();
   }
 
   function completeGoalHandler() {
@@ -83,34 +84,12 @@ function GoalDetails({ route, navigation }) {
 
   return (
     <View style={styles.container}>
-      {/* <View style={styles.titleContainer}>
-        <IconButton
-          icon={"create-outline"}
-          size={40}
-          color={GlobalStyles.colors.dark1}
-          onPress={editGoalHandler}
-          //title={'Edit'}
-        />
-        <Text style={styles.titles}>{selectedGoal.title}</Text>
-        {selectedGoal.isComplete && (
-          <IconButton
-          icon={"checkbox"}
-          size={40}
-          color={GlobalStyles.colors.dark1}
-          onPress={completeGoalHandler}
-          />
-        )}
-        {selectedGoal.isComplete ||(
-        <IconButton
-          icon={"close"}
-          size={40}
-          color={GlobalStyles.colors.dark1}
-          onPress={completeGoalHandler}
-
-          // create conditional view for completed, incomplete and incomplete with unfinished tasks
-          // onpress alert for can complete or want to complete
-        /> )}
-      </View> */}
+                {/* <IconButton
+            icon={"trash"}
+            size={50}
+            color={GlobalStyles.colors.dark1}
+            onPress={deleteGoalHandler}
+          /> */}
       <View style={styles.detailsContainer}>
         <View style={styles.titleContainer}>
         <Text style={styles.titles}>I Will</Text>
@@ -132,7 +111,7 @@ function GoalDetails({ route, navigation }) {
         </Text>
       </View>
       <View style={styles.taskTitleContainer}>
-        <Text style={styles.titles}>{selectedGoal.completedTasks} out of {selectedGoal.totalTasks} tasks complete </Text>
+        {/* <Text style={styles.titles}>{selectedGoal.completedTasks} out of {selectedGoal.totalTasks} tasks complete </Text> */}
         {/* if complete = total display complete goal option  */}
       </View>
       <TasksOutput tasks={goalTasks} />
