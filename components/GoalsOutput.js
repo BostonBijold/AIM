@@ -19,4 +19,4 @@ const styles = StyleSheet.create ({
         flex: 1, 
         backgroundColor: GlobalStyles.colors.white
     }
-})
+});

@@ -27,9 +27,15 @@ const [inputs, setInputs] = useState({
         isValid: true,
     },
     isComplete: {
-        value: defaultValues ? defaultValues.isComplete : "",
+        value: defaultValues ? defaultValues.isComplete : false,
         isValid: true,
     },
+    completedTasks: {
+      value: defaultValues ? defaultValues.completedTasks : 0, 
+    },
+    totalTasks: {
+      value: defaultValues ? defaultValues.totalTasks : 0, 
+    }
 });
 
 
@@ -49,6 +55,9 @@ function submitHandler() {
         willDescription: inputs.willDescription.value,
         whyDescription: inputs.whyDescription.value, 
         deadline: new Date(inputs.deadline.value),
+        isComplete: inputs.isComplete.value, 
+        completedTasks: inputs.completedTasks.value,
+        totalTasks: inputs.totalTasks.value
     };
 
     const titleIsValid = goalData.title.trim().length > 0;
@@ -62,7 +71,8 @@ function submitHandler() {
             title: {value: curInputs.title.value, isValid: titleIsValid}, 
             willDescription: {value: curInputs.willDescription.value, isValid: willDescriptionIsValid},
             whyDescription: { value: curInputs.whyDescription.value, isValid: whyDescriptionIsValid},
-            deadline: { value: curInputs.deadline.value, isValid: deadlineIsValid}
+            deadline: { value: curInputs.deadline.value, isValid: deadlineIsValid},
+            isComplete: {value: curInputs.isComplete.value}
             };
         });
         return;
@@ -126,13 +136,6 @@ function submitHandler() {
             <Button style={styles.button} onPress={submitHandler}>{submitButtonLable}</Button>
         </View>
       </View>
-      {/* <View style={styles.buttonContainer}>
-  <IconButton
-    icon={"add"}
-    size={50}
-    color={GlobalStyles.colors.dark1}
-  ></IconButton>
-</View> */}
     </View>
   );
 }
@@ -158,6 +161,7 @@ const styles = StyleSheet.create({
     marginVertical: 24,
     textAlign: "center",
   },
+  //Limit title input char limit.
   buttonContainer: {
     borderColor: GlobalStyles.colors.layer1,
     borderRadius: 8,

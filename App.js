@@ -16,6 +16,9 @@ import DailyFocus from "./screens/DailyFocus";
 import { GlobalStyles } from "./constants/colors";
 import IconButton from "./components/UI/IconButton";
 import GoalContextProvider from "./storage/goal-context";
+import GoalDetails from "./screens/GoalDetails";
+import User from "./screens/User";
+import TaskContextProvider from "./storage/Task-Context";
 
 const BottomTabs = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -30,15 +33,28 @@ function AgileLifeDevelopmentOverview() {
         tabBarActiveTintColor: GlobalStyles.colors.white,
         //tabBarInactiveTintColor: GlobalStyles.colors.layer4,
         headerRight: ({ tintColor }) => (
-          <IconButton icon={"person"} size={30} color={tintColor}
-          onPress={() => {navigation.navigate('Manage Goal')}} />
+          <IconButton
+            icon={"person"}
+            size={30}
+            color={tintColor}
+            onPress={() => {
+              navigation.navigate("User");
+            }}
+          />
         ),
-        headerLeft:  ({ tintColor }) => (
-          <IconButton icon={"information-circle-outline"} size={30} color={tintColor}
-          onPress={() => {navigation.navigate('Information')}} />)
+        headerLeft: ({ tintColor }) => (
+          <IconButton
+            icon={"information-circle-outline"}
+            size={30}
+            color={tintColor}
+            onPress={() => {
+              navigation.navigate("Information");
+            }}
+          />
+        ),
       })}
     >
-            <BottomTabs.Screen
+      <BottomTabs.Screen
         name="Focus"
         component={DailyFocus}
         options={{
@@ -83,34 +99,54 @@ export default function App() {
     <>
       <StatusBar style="auto" />
       <GoalContextProvider>
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={({ navigation }) => ({
-            headerStyle: { backgroundColor: GlobalStyles.colors.layer1 },
-            headerTintColor: "#fff",
-            headerRight: ({ tintColor }) => (
-              <IconButton icon={"close"} size={30} color={tintColor}
-              onPress={() => {navigation.goBack()}} />
-            ),
-          })}
-        >
-          <Stack.Screen
-            name="Back"
-            component={AgileLifeDevelopmentOverview}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen name="Manage Goal" component={ManageGoal} options={{
-            presentation: "modal"
-          }} />
-          <Stack.Screen name="Manage Task" component={ManageTask} />
-          <Stack.Screen name="Information" component={Information} />
-        </Stack.Navigator>
-      </NavigationContainer>
+        <TaskContextProvider>
+          <NavigationContainer>
+            <Stack.Navigator
+              screenOptions={({ navigation }) => ({
+                headerStyle: { backgroundColor: GlobalStyles.colors.layer1 },
+                headerTintColor: "#fff",
+                // headerRight: ({ tintColor }) => (
+                //   <IconButton icon={"close"} size={30} color={tintColor}
+                //   onPress={() => {navigation.goBack()}} />
+                // ),
+              })}
+            >
+              <Stack.Screen
+                name="Back"
+                component={AgileLifeDevelopmentOverview}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Manage Goal"
+                component={ManageGoal}
+                options={{
+                  presentation: "modal",
+                }}
+              />
+              <Stack.Screen
+                name="Manage Task"
+                component={ManageTask}
+                options={{
+                  presentation: "modal",
+                }}
+              />
+              <Stack.Screen name="Information" component={Information} />
+              <Stack.Screen
+                name="GoalDetails"
+                component={GoalDetails}
+                options={{
+                  presentation: "modal",
+                }}
+              />
+              <Stack.Screen name="User" component={User} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </TaskContextProvider>
       </GoalContextProvider>
     </>
   );
 }
 
-// use navigation desturctureing - pressable goal to open manage goal - to open manage task in a goal. 
-// make a + button under the goals to open manage goal- repeat for manage task. 
-// replace + in header with info screen 
+// use navigation desturctureing - pressable goal to open manage goal - to open manage task in a goal.
+// make a + button under the goals to open manage goal- repeat for manage task.
+// replace + in header with info screen
