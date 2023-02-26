@@ -15,13 +15,11 @@ export const GoalContext = createContext({
 function goalReducer(state, action) {
   switch (action.type) {
     case 'SET': 
-      const inverted = action.payload.reverse(); //reverses the order of the goals from latest enered to first entered. 
+      //const inverted = action.payload.reverse(); //reverses the order of the goals from latest enered to first entered. 
       // return inverted;
       return action.payload;
     case "ADD":
-    
-      //const id = new Date().toString() + Math.random().toString();
-      return [action.payload, ...state];
+      return [{...action.payload}, ...state];
       //return [{ ...action.payload, id: id }, ...state]; - updated by http connection 
     case "UPDATE":
       const updateableGoalIndex = state.findIndex(
@@ -35,6 +33,7 @@ function goalReducer(state, action) {
       return updatedGoals;
     case "DELETE":
       return state.filter((goal) => goal.id !== action.payload);
+      // delete goal is NOT working. Check ===============================================
     default:
       return state;
   }

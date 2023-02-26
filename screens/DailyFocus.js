@@ -1,11 +1,17 @@
-import { useContext } from "react";
-import { Text, View } from "react-native";
+import { useContext, useEffect, useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import FocusOutput from "../components/FocusOutput";
 import GoalsOutput from "../components/GoalsOutput";
 import TaskItem from "../components/TaskItem";
 import TasksOutput from "../components/TasksOutput";
+import ErrorOverlay from "../components/UI/ErrorOverlay";
+import LoadingOverlay from "../components/UI/LoadingOverlay";
+import { FocusContext } from "../storage/Focus-Context";
 import { GoalContext } from "../storage/goal-context";
 import { TaskContext } from "../storage/Task-Context";
 import TaskList from "../storage/TaskList";
+import { getDateMinusDays } from "../util/date";
+import { fetchTasks, fetchFocus } from "../util/http";
 
 // Daily focus or 'Focus' is where the user will focus their day. This is the personal daily standup for the user.
 // The user can add new tasks and related them to active goals or select previously entered tasks to focus on.
@@ -14,21 +20,73 @@ import TaskList from "../storage/TaskList";
 // I want a notes secion for review of the previous day or at the end of the day, a daily (or self timed) retrospective.
 //
 
-function DailyFocus() {
+
+
+function DailyFocus({route}) {
+  const focusCtx = useContext(FocusContext);
   const taskCtx = useContext(TaskContext);
-  const activeTasks = taskCtx.tasks.filter((task) => {
-    return task.isComplete === false;
-  });
+  const [error, setError] = useState();
+  const [isfetching, setIsFetching] = useState(true); // set to true since inital page load will always need to load data.
+// const focusId = 1
+// day filter 
+const todaysFocus = focusCtx.focus.filter((focus) => {
+  const today = new Date(); // gets today's date
+  const oneDay = getDateMinusDays(today, 1); // gets yesterday's date 
+  return focus.focusDate > oneDay;
+  // update to pull first focus - ensure only today's date is the loaded focus. 
+});
 
-  return (
+// end 
+
+
+  useEffect(() => {
+    async function getTasks() {
+      setIsFetching(true);
+      try {
+        const taskLoad = await fetchTasks();
+        //error is in taskCtx 
+        taskCtx.setTasks(taskLoad);
+      } catch (error) {
+        setError("Could not fetch goals.");
+      }
+      setIsFetching(false);
+    }
+    async function getFocus() {
+      try {
+        const focusLoad = await fetchFocus();
+        focusCtx.setFocus(focusLoad);
+      } catch (error) {
+        setError("Could not fetch Focus");
+      }
+    }
+
+    getTasks();
+    //getFocus();
+  }, []);
+
+  function errorHandler() {
+    setError(null);
     
-    // <View>
-    //   <Text>Daily Focus: </Text>
-    //   <Text>Enter task for the day or select previously entered task</Text>
-    // </View>
-    <TasksOutput tasks={activeTasks} /> 
+// attempt to reload data upon confirm being pressed. 
+  }
+  if (error && !isfetching) {
+    return <ErrorOverlay message={error} onConfirm={errorHandler}/> 
+  }
 
-  );
+  if (isfetching) {
+    return <LoadingOverlay />;
+  }
+  
+  // const activeTasks = taskCtx.tasks.filter((task) => {
+  //   return task.isComplete === false;
+  // });
+
+  // const focusdata = focusCtx.focus;
+  // return <TasksOutput tasks={activeTasks} />;
+  const TDFocus = todaysFocus[0];
+  const focusId = TDFocus.id;
+  return <FocusOutput defaultValues={TDFocus} focusId={focusId} />;
 }
 
 export default DailyFocus;
+

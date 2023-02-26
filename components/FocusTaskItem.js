@@ -1,20 +1,30 @@
 import { Pressable, StyleSheet, Text, View, Alert } from "react-native";
 import { GlobalStyles } from "../constants/colors";
-import { getFormatedDate } from "../util/date";
+import { getDateMinusDays, getFormatedDate } from "../util/date";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { TaskContext } from "../storage/Task-Context";
 import { useContext } from "react";
 import { GoalContext } from "../storage/goal-context";
+import { FocusContext } from "../storage/Focus-Context";
 
-function TaskItem({ id, goalId, isComplete, description, goalTitle}) {
+function FocusTaskItem({ id, goalId, isComplete, description, goalTitle }) {
   const navigation = useNavigation();
   const taskCtx = useContext(TaskContext);
+  const focusCtx = useContext(FocusContext);
   const goalsCtx = useContext(GoalContext);
 
   const editedGoalId = goalId; //params? checks if a value is provided.
   //const isEditing = !!editedGoalId;
   const selectedGoal = goalsCtx.goals.find((goal) => goal.id === editedGoalId);
+
+// get today's focus 
+const todaysFocus = focusCtx.focus.filter((focus) => {
+    const today = new Date(); // gets today's date
+    const oneDay = getDateMinusDays(today, 1); // gets yesterday's date 
+    return focus.focusDate > oneDay;
+  });
+  // end get today's focus 
 
   function completeTask() {
     taskCtx.updateTask(id, {
@@ -51,25 +61,15 @@ function TaskItem({ id, goalId, isComplete, description, goalTitle}) {
     });
   }
 
-  function editTask() {
-    navigation.navigate("Manage Task", { taskId: id, goal: selectedGoal });
-// full goal is passes but only the task id is passed? 
-  }
+  function returnTask() {
+    const focus = focusCtx.focus[0]; // ensure the first focus is always today's focus
 
-
-  function taskPressHandler() {
-    if (isComplete) {
-      Alert.alert("Edit Task or reactivate?", "", [
-        { text: "Edit", onPress: editTask },
-        { text: "Activate", onPress: activateTask },
-      ]);
-    } else {
-      Alert.alert("Edit Task or mark as Complete?", "", [
-        { text: "Edit", onPress: editTask },
-        { text: "Complete", onPress: completeTask },
-      ]);
-    }
-    // update to task something
+    focus.focusTasks.push(id);
+    // add a check to focus tasks for task. 
+    // better- only load tasks not in focus tasks. Add to addfocus screen 
+    
+    // console.log(focus);
+    navigation.goBack();
   }
 
  // make a + press change the plus to a task and add in goal details screen. 
@@ -77,7 +77,7 @@ function TaskItem({ id, goalId, isComplete, description, goalTitle}) {
 
   return (
     <Pressable
-      onPress={editTask}
+      onPress={returnTask}
       style={({ pressed }) => pressed && styles.pressed}
     >
       <View style={styles.taskContainer}>
@@ -116,7 +116,7 @@ function TaskItem({ id, goalId, isComplete, description, goalTitle}) {
   );
 }
 
-export default TaskItem;
+export default FocusTaskItem;
 
 const styles = StyleSheet.create({
   taskContainer: {

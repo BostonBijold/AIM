@@ -1,47 +1,25 @@
 import { createContext, useReducer } from "react";
 
-const DUMMY_TASKS = [
-  {
-    id: "t1",
-    goalId: "g1",
-    description: "Learn React Native.",
-    isComplete: false,
-  },
-  {
-    id: "t2",
-    goalId: "g1",
-    description: "Learn source control in bitbucket.",
-    isComplete: false,
-  },
-  {
-    id: "t3",
-    goalId: "g1",
-    description: "Add a focus screen.",
-    isComplete: true,
-  },
-  {
-    id: "t4",
-    goalId: "g2",
-    description: "Plan a pant-less weekend.",
-    isComplete: false,
-  },
-];
-
- //update
 export const TaskContext = createContext({
   tasks: [],
-  addTask: ( goalId, description) => {},
+  setTasks: [],
+  addTask: ( goalId, description) => {},// add goal title to task update 
   deleteTask: (id) => {},
   updateTask: (
     id,
-    { goalId, description, isComplete }
+    { goalId, goalTitle, description, isComplete } 
   ) => {},
 });
 
 function taskReducer(state, action) {
   switch (action.type) {
+    case 'SET': 
+    //const inverted = action.payload.reverse(); 
+    // return inverted;
+    return action.payload;
     case "ADD":
       const id = new Date().toString() + Math.random().toString();
+      // not using task Id from firebase update -----------------------------------------
       return [{ ...action.payload, id: id }, ...state];
     case "UPDATE":
       const updateableTaskIndex = state.findIndex(
@@ -60,7 +38,11 @@ function taskReducer(state, action) {
 }
 
 function TaskContextProvider({ children }) {
-  const [tasksState, dispatch] = useReducer(taskReducer, DUMMY_TASKS);
+  const [tasksState, dispatch] = useReducer(taskReducer, []);
+
+  function setTasks(tasks) {
+    dispatch({type: 'SET', payload: tasks});
+  }
 
   function addTask(taskData) {
     dispatch({ type: "ADD", payload: taskData });
@@ -76,6 +58,7 @@ function TaskContextProvider({ children }) {
 
   const value = {
     tasks: tasksState,
+    setTasks: setTasks,
     addTask: addTask,
     deleteTask: deleteTask,
     updateTask: updateTask,

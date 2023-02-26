@@ -38,7 +38,6 @@ const [inputs, setInputs] = useState({
     }
 });
 
-
 function inputChangedHandler(inputIdentifier, enteredValue) {
     setInputs((curInputs) => {
       return {

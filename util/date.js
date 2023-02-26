@@ -5,3 +5,6 @@ export function getFormatedDate(date) {
 export function getDateMinusDays(date, days) {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate() - days);
 }
+
+// https://momentjs.com/
+// date library for formating. Reasearch later

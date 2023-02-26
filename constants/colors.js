@@ -14,6 +14,8 @@ export const GlobalStyles = {
 
         text1: '#F0EFDB',
 
+        green: '#525E00',
+
         errorText: '#f44336'
     }
 };
