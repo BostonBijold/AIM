@@ -21,20 +21,41 @@ import { fetchTasks, fetchFocus } from "../util/http";
 //
 
 
+const newdummy = {
+    id: 1,
+    focusDate: new Date(),
+    journal: "Memento Mori.",
+    focusTasks: [],
+    tasksCompleted: false, 
+};
 
 function DailyFocus({route}) {
   const focusCtx = useContext(FocusContext);
+  // console.log(focusCtx.focus)
+  // console.log('break')
+
   const taskCtx = useContext(TaskContext);
   const [error, setError] = useState();
   const [isfetching, setIsFetching] = useState(true); // set to true since inital page load will always need to load data.
 // const focusId = 1
 // day filter 
-const todaysFocus = focusCtx.focus.filter((focus) => {
+
+// Filter focus to grab the most recent? not a day search? 
+
+const TDFocus = focusCtx.focus.filter((focus) => {
   const today = new Date(); // gets today's date
   const oneDay = getDateMinusDays(today, 1); // gets yesterday's date 
   return focus.focusDate > oneDay;
   // update to pull first focus - ensure only today's date is the loaded focus. 
+  //todaysfocus update to todaysFocus[0] - extract here not below
 });
+//console.log(focusCtx.focus)
+let todaysFocus 
+if (TDFocus[0] !== new Date()) {
+  todaysFocus = newdummy;
+} else{
+todaysFocus = TDFocus;
+}
 
 // end 
 
@@ -54,6 +75,9 @@ const todaysFocus = focusCtx.focus.filter((focus) => {
     async function getFocus() {
       try {
         const focusLoad = await fetchFocus();
+        if(focusLoad[0].focusDate !== new Date()) {
+          focusLoad.unshift(newdummy) // if the first focus is not todays date pushes dummy data to the first of the array and stores. 
+        }
         focusCtx.setFocus(focusLoad);
       } catch (error) {
         setError("Could not fetch Focus");
@@ -61,7 +85,7 @@ const todaysFocus = focusCtx.focus.filter((focus) => {
     }
 
     getTasks();
-    //getFocus();
+    getFocus();
   }, []);
 
   function errorHandler() {
@@ -83,9 +107,21 @@ const todaysFocus = focusCtx.focus.filter((focus) => {
 
   // const focusdata = focusCtx.focus;
   // return <TasksOutput tasks={activeTasks} />;
-  const TDFocus = todaysFocus[0];
+
+  //pulls the first Focus- today's foucus. 
+  // if focus doesn't exist create one. 
+  //const TDFocus = todaysFocus[0]; 
   const focusId = TDFocus.id;
-  return <FocusOutput defaultValues={TDFocus} focusId={focusId} />;
+  const today = new Date();
+
+  // if (focusId.focusDate != today) {
+  //   //focustest = newdummy
+  //   return <FocusOutput defaultValues={newdummy} focusId={4} />;
+
+  // };
+
+
+  return <FocusOutput defaultValues={todaysFocus} focusId={focusId} />;
 }
 
 export default DailyFocus;

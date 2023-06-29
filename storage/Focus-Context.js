@@ -3,7 +3,7 @@ import { createContext, useReducer } from "react";
 const DUMMY = [
   {
     id: 124,
-    focusDate: new Date("2023-02-25"),
+    focusDate: new Date("2023-03-06"),
     journal: "journal string stored 2.",
     focusTasks: [ '-NMxyjJAAy-HomIY_Wja', '-NMy1_kFU-KXATdgT28H'
       // {
@@ -61,8 +61,7 @@ function focusReducer(state, action) {
 }
 
 function FocusContextProvider({ children }) {
-  const [focusState, dispatch] = useReducer(focusReducer, DUMMY);
-  // dummy data is being passed as an array. Needs a filter for journal auto fill.
+  const [focusState, dispatch] = useReducer(focusReducer, []);
 
   function setFocus(focus) {
     dispatch({ type: "SET", payload: focus });

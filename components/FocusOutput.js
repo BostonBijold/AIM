@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 import TasksOutput from "./TasksOutput";
-import { fetchFocus, fetchTasks, storeFocus } from "../util/http";
+import { fetchFocus, fetchTasks, storeFocus, updateFocus } from "../util/http";
 import { TaskContext } from "../storage/Task-Context";
 import IconButton from "./UI/IconButton";
 import { GlobalStyles } from "../constants/colors";
@@ -16,6 +16,7 @@ import Button from "./UI/Button";
 import FocusTaskList from "../storage/FocusTasksList";
 import TaskList from "../storage/TaskList";
 import { useNavigation } from "@react-navigation/native";
+import { getFormatedDate } from "../util/date";
 
 const DUMMY = [
   {
@@ -84,28 +85,51 @@ function FocusOutput({defaultValues, focusId}) {
     }
 
     getTasks();
-    getFocus();
+    //getFocus();
   }, []);
   
   function addTaskToFocus(task) {
+    // This is not being used, delete? ...................
     input.focusTasks.push(task);
   }
 
   async function submitHandler() {
     // used when text is saved, and when tasks are added.
-    const focusData = {
-      journal: input.journal,
-      focusDate: new Date(),
-      // numberOfTasks: numberOfTasks
-      focusTasks: [], // use focus ID for Task Refence and load tasks when viewing history or current focus.
-    };
-    try {
-      //const id = await storeFocus(focusData);
-    } catch {
-      console.log("error");
+
+    if(focusId === 1){
+      const focusData = {
+        journal: input.journal.value,
+        //focusDate: new Date(), // not needed. use focus's date. no need to update. 
+        focusDate : getFormatedDate(new Date()),
+        // numberOfTasks: numberOfTasks
+        focusTasks: input.focusTasks.value, // use focus ID for Task Refence and load tasks when viewing history or current focus.
+      };
+      console.log(getFormatedDate(new Date()))
+      try {
+        const id = await storeFocus(focusData);
+      } catch {
+        console.log("error");
+      }
+      navigation.navigate("Focus"); 
+      //returns the user to the focus screen outside of a modal.
+    } 
+    else {
+
+      const focusData = {
+        journal: input.journal.value,
+        focusDate: defaultValues.focusDate,
+        // numberOfTasks: numberOfTasks
+        focusTasks: input.focusTasks.value, // use focus ID for Task Refence and load tasks when viewing history or current focus.
+      };
+      //console.log(focusData)
+      try {
+        await updateFocus(focusId, focusData)
+      } catch {
+        console.log("error");
+      }
+      navigation.navigate("Focus"); 
+      //returns the user to the focus screen outside of a modal.
     }
-    navigation.navigate("Focus"); 
-    //returns the user to the focus screen outside of a modal.
 
   }
 
@@ -114,8 +138,11 @@ function FocusOutput({defaultValues, focusId}) {
     );
     // magically worked...... ^
 
-console.log(defaultValues.focusTasks)
-
+//console.log(defaultValues.focusTasks)
+// Tasks are being loged with each key stroke. Optimization would stop this to speed up the app. 
+// the multi log is due to the state change using Bind for the text. 
+// don't bind the text, we don't want the local to be one value with the stored as another. 
+console.log(getFormatedDate(new Date()))
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>

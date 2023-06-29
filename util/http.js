@@ -74,12 +74,18 @@ export function removeTask(id) {
 
 
 export async function storeFocus(focusData) {
+  //console.log(focusData)
   const response = await axios.post(BACKEND_URL + "/focus.json", focusData);
   const id = response.data.name;
   return id;
 }
 
+export async function updateFocus(id, focusData) {
+  return axios.put(BACKEND_URL + `/focus/${id}.json`, focusData);
+}
+
 export async function fetchFocus() {
+  // fetchFocus fetches all focus. Update to only get the current? All will be used in the calendar. 
   const response = await axios.get(BACKEND_URL + "/focus.json");
 
   const focus = [];
