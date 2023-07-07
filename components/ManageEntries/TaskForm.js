@@ -6,18 +6,27 @@ import Button from "../UI/Button";
 import Input from "./Input";
 import IconButton from "../UI/IconButton";
 
-function TaskForm({ onCancel, onSubmit, submitButtonLable, defaultValues}) {
+function TaskForm({ onCancel, onSubmit, submitButtonLable, defaultValues, goal_Id, goalTitle}) {
+  //console.log(defaultValues.goalTitle);
 const [inputs, setInputs] = useState({
     //Creates oject values for the goal
+    // goalTitle: 'Remove embed', // pass title from goal for storage in task
+
+    // flatlist of goal titles for adding tasks to? ----------------------------------------------------------<
 
     goalId: {
-        value: defaultValues ? defaultValues.goalId : "", 
+        value: goal_Id , //does not check for value but does add the goalID. will be invisible soon.
         isValid: true
     },
+    
     description: { 
         value: defaultValues ? defaultValues.description : "", 
         isValid: true,
     }, 
+    goalTitle: {
+      value: defaultValues ? defaultValues.goalTitle : goalTitle,
+      isValid: true,
+    },
     isComplete: {
         value: defaultValues ? defaultValues.isComplete : false,
         isValid: true,
@@ -37,18 +46,23 @@ function inputChangedHandler(inputIdentifier, enteredValue) {
 
 function submitHandler() {
     const taskData = {
+        goalTitle: inputs.goalTitle.value, // pass title from goal for storage in task
         goalId: inputs.goalId.value, 
         description: inputs.description.value,
         isComplete: inputs.isComplete.value
     };
 
-    const goalIdIsValid = taskData.goalId.trim().length > 0;
-    const descriptionIsValid = taskData.description.trim().length > 0;
+ //   const goalIdIsValid = taskData.goalId.trim().length > 0;
+ const goalTitleIsValid = taskData.goalTitle.trim().length > 0;
+  
+ const descriptionIsValid = taskData.description.trim().length > 0;
 
-    if (!goalIdIsValid || !descriptionIsValid ) {
+    if (!goalTitleIsValid || !descriptionIsValid ) {
         setInputs((curInputs) => {
             return{
-            goalId: {value: curInputs.goalId.value, isValid: goalIdIsValid}, 
+            // goalTitle: {value: curInputs.goalTitle.value, isValid: goalTitleIsValid},
+            goalId: {goal_Id}, 
+            goalTitle: {value:goalTitle}, 
             description: {value: curInputs.description.value, isValid: descriptionIsValid},
             isComplete: {value: curInputs.isComplete.value}
             };
@@ -61,7 +75,7 @@ function submitHandler() {
 
   const formIsInvalid =
     !inputs.description.isValid ||
-    !inputs.goalId.isValid;
+    !inputs.goalTitle.isValid;
 
 
   return (
@@ -69,11 +83,11 @@ function submitHandler() {
       <View>
       <Input
           style={styles.rowInput}
-          label="goalID:"
-          invalid={!inputs.description.isValid}
+          label="Goal Title:"
+          invalid={!inputs.goalTitle.isValid}
           textInputConfig={{
-            onChangeText: inputChangedHandler.bind(this, 'goalId'),
-            value: inputs.goalId.value
+            onChangeText: inputChangedHandler.bind(this, 'goalTitle'),
+            value: inputs.goalTitle.value
           }}
         />
         <Input

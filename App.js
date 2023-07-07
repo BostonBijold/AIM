@@ -19,6 +19,8 @@ import GoalContextProvider from "./storage/goal-context";
 import GoalDetails from "./screens/GoalDetails";
 import User from "./screens/User";
 import TaskContextProvider from "./storage/Task-Context";
+import FocusContextProvider from "./storage/Focus-Context";
+import AddFocusTask from "./screens/AddFocusTask";
 
 const BottomTabs = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -99,49 +101,66 @@ export default function App() {
     <>
       <StatusBar style="auto" />
       <GoalContextProvider>
-        <TaskContextProvider>
-          <NavigationContainer>
-            <Stack.Navigator
-              screenOptions={({ navigation }) => ({
-                headerStyle: { backgroundColor: GlobalStyles.colors.layer1 },
-                headerTintColor: "#fff",
-                // headerRight: ({ tintColor }) => (
-                //   <IconButton icon={"close"} size={30} color={tintColor}
-                //   onPress={() => {navigation.goBack()}} />
-                // ),
-              })}
-            >
-              <Stack.Screen
-                name="Back"
-                component={AgileLifeDevelopmentOverview}
-                options={{ headerShown: false }}
-              />
-              <Stack.Screen
-                name="Manage Goal"
-                component={ManageGoal}
-                options={{
-                  presentation: "modal",
-                }}
-              />
-              <Stack.Screen
-                name="Manage Task"
-                component={ManageTask}
-                options={{
-                  presentation: "modal",
-                }}
-              />
-              <Stack.Screen name="Information" component={Information} />
-              <Stack.Screen
-                name="GoalDetails"
-                component={GoalDetails}
-                options={{
-                  presentation: "modal",
-                }}
-              />
-              <Stack.Screen name="User" component={User} />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </TaskContextProvider>
+        <FocusContextProvider>
+          <TaskContextProvider>
+            <NavigationContainer>
+              <Stack.Navigator
+                screenOptions={({ navigation }) => ({
+                  headerStyle: { backgroundColor: GlobalStyles.colors.layer1 },
+                  headerTintColor: "#fff",
+                  // headerRight: ({ tintColor }) => (
+                  //   <IconButton icon={"close"} size={30} color={tintColor}
+                  //   onPress={() => {navigation.goBack()}} />
+                  // ),
+                })}
+              >
+                {/* I don't know if I need this screen or if the name is wrong */}
+                <Stack.Screen
+                  name="Back"
+                  component={AgileLifeDevelopmentOverview}
+                  options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                  name="Manage Goal"
+                  component={ManageGoal}
+                  options={{
+                    presentation: "modal",
+                  }}
+                />
+                <Stack.Screen
+                  name="Manage Task"
+                  component={ManageTask}
+                  options={{
+                    presentation: "modal",
+                  }}
+                />
+                <Stack.Screen
+                  name="Add Task To Focus"
+                  component={AddFocusTask}
+                  // options={{
+                  //   presentation: "modal",
+                  // }}
+                />
+                <Stack.Screen
+                  name="Focus Modal"
+                  component={DailyFocus}
+                  options={{
+                    presentation: "modal",
+                  }}
+                />
+                <Stack.Screen name="Information" component={Information} />
+                <Stack.Screen
+                  name="GoalDetails"
+                  component={GoalDetails}
+                  options={{
+                    presentation: "modal",
+                  }}
+                />
+                <Stack.Screen name="User" component={User} />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </TaskContextProvider>
+        </FocusContextProvider>
       </GoalContextProvider>
     </>
   );

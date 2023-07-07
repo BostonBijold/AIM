@@ -109,12 +109,13 @@ function GoalDetails({ route, navigation }) {
         <Text style={styles.detailsText}>
           {getFormatedDate(selectedGoal.deadline)}
         </Text>
+        <Text>{selectedGoal.completedTasks} / {selectedGoal.totalTasks}</Text>
       </View>
       <View style={styles.taskTitleContainer}>
         {/* <Text style={styles.titles}>{selectedGoal.completedTasks} out of {selectedGoal.totalTasks} tasks complete </Text> */}
         {/* if complete = total display complete goal option  */}
       </View>
-      <TasksOutput tasks={goalTasks} />
+      <TasksOutput tasks={goalTasks} goal={selectedGoal} />
     </View>
   );
 }
