@@ -18,26 +18,10 @@ import TaskList from "../storage/TaskList";
 import { useNavigation } from "@react-navigation/native";
 import { getFormatedDate } from "../util/date";
 
-const DUMMY = [
-  {
-    id: 123,
-    focusDate: new Date('2023-01-01') , 
-    journal: 'journal string stored.', 
-    //task list,
-    tasksCompleted: false
-  }, 
-  {
-    id: 124,
-    focusDate: new Date('2023-02-04') , 
-    journal: 'journal string stored 2.', 
-    //task list,
-    tasksCompleted: false
-  }, 
-]
 
 
 function FocusOutput({defaultValues, focusId}) {
-  // console.log(focusId)
+  //console.log(defaultValues)
   const navigation = useNavigation();
   const [error, setError] = useState();
   const taskCtx = useContext(TaskContext);
@@ -89,14 +73,16 @@ function FocusOutput({defaultValues, focusId}) {
   }, []);
   
   function addTaskToFocus(task) {
-    // This is not being used, delete? ...................
+    // This is not being used, delete? ................... 07/07/2023 
     input.focusTasks.push(task);
   }
 
   async function submitHandler() {
     // used when text is saved, and when tasks are added.
 
-    if(focusId === 1){
+
+// no need now that the ID is created and updated upon load. 
+    if(focusId === 1){  // updated focus load creates the new focus if no focus exists. No need to check for id
       const focusData = {
         journal: input.journal.value,
         //focusDate: new Date(), // not needed. use focus's date. no need to update. 
@@ -104,7 +90,6 @@ function FocusOutput({defaultValues, focusId}) {
         // numberOfTasks: numberOfTasks
         focusTasks: input.focusTasks.value, // use focus ID for Task Refence and load tasks when viewing history or current focus.
       };
-      console.log(getFormatedDate(new Date()))
       try {
         const id = await storeFocus(focusData);
       } catch {
@@ -121,7 +106,6 @@ function FocusOutput({defaultValues, focusId}) {
         // numberOfTasks: numberOfTasks
         focusTasks: input.focusTasks.value, // use focus ID for Task Refence and load tasks when viewing history or current focus.
       };
-      //console.log(focusData)
       try {
         await updateFocus(focusId, focusData)
       } catch {
@@ -133,16 +117,15 @@ function FocusOutput({defaultValues, focusId}) {
 
   }
 
-  const nonFocusTasks = taskCtx.tasks.filter(
-    (task) => defaultValues.focusTasks.some((id) => id === task.id)
-    );
+  // const nonFocusTasks = taskCtx.tasks.filter(
+  //   (task) => defaultValues.focusTasks.some((id) => id === task.id)
+  //   );
+
     // magically worked...... ^
 
-//console.log(defaultValues.focusTasks)
 // Tasks are being loged with each key stroke. Optimization would stop this to speed up the app. 
 // the multi log is due to the state change using Bind for the text. 
 // don't bind the text, we don't want the local to be one value with the stored as another. 
-console.log(getFormatedDate(new Date()))
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
@@ -172,7 +155,7 @@ console.log(getFormatedDate(new Date()))
           </View>
         </View>
         {/* <TaskList tasks={nonFocusTasks} focusId={focusId} extraData={defaultValues.focusData}/> */}
-        <TasksOutput tasks={nonFocusTasks} focusId={focusT}  />
+        <TasksOutput tasks={taskCtx.tasks} focusId={focusT}  />
         {/* <FocusTaskList tasks={input.focusTasks.value} focusId={focusId}  /> */}
         {/* pass a value to have add open select task modal.  */}
       </View>

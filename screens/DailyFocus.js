@@ -11,7 +11,7 @@ import { GoalContext } from "../storage/goal-context";
 import { TaskContext } from "../storage/Task-Context";
 import TaskList from "../storage/TaskList";
 import { getDateMinusDays } from "../util/date";
-import { fetchTasks, fetchFocus } from "../util/http";
+import { fetchTasks, fetchFocus, storeFocus, updateFocus } from "../util/http";
 
 // Daily focus or 'Focus' is where the user will focus their day. This is the personal daily standup for the user.
 // The user can add new tasks and related them to active goals or select previously entered tasks to focus on.
@@ -20,42 +20,43 @@ import { fetchTasks, fetchFocus } from "../util/http";
 // I want a notes secion for review of the previous day or at the end of the day, a daily (or self timed) retrospective.
 //
 
+const newID = {
+  focusDate: new Date(), // date not created to remove time stamp. 
+
+}
 
 const newdummy = {
     id: 1,
-    focusDate: new Date(),
-    journal: "Memento Mori.",
+    focusDate: new Date(), // date not created to remove time stamp. 
+    journal: "Memento Mori",
     focusTasks: [],
     tasksCompleted: false, 
 };
 
 function DailyFocus({route}) {
   const focusCtx = useContext(FocusContext);
-  // console.log(focusCtx.focus)
-  // console.log('break')
 
   const taskCtx = useContext(TaskContext);
   const [error, setError] = useState();
   const [isfetching, setIsFetching] = useState(true); // set to true since inital page load will always need to load data.
-// const focusId = 1
-// day filter 
 
-// Filter focus to grab the most recent? not a day search? 
 
 const TDFocus = focusCtx.focus.filter((focus) => {
   const today = new Date(); // gets today's date
   const oneDay = getDateMinusDays(today, 1); // gets yesterday's date 
   return focus.focusDate > oneDay;
-  // update to pull first focus - ensure only today's date is the loaded focus. 
-  //todaysfocus update to todaysFocus[0] - extract here not below
+
 });
-//console.log(focusCtx.focus)
 let todaysFocus 
-if (TDFocus[0] !== new Date()) {
-  todaysFocus = newdummy;
+todaysFocus = TDFocus[0];
+if (TDFocus.length === 0 ) {
+  todaysFocus = newdummy; // sets to dummy but updates upon id creation. 
+  // still loads dummy first
 } else{
-todaysFocus = TDFocus;
+  todaysFocus = TDFocus[0];
 }
+// console.log(todaysFocus)
+
 
 // end 
 
@@ -73,22 +74,40 @@ todaysFocus = TDFocus;
       setIsFetching(false);
     }
     async function getFocus() {
-      try {
-        const focusLoad = await fetchFocus();
-        if(focusLoad[0].focusDate !== new Date()) {
-          focusLoad.unshift(newdummy) // if the first focus is not todays date pushes dummy data to the first of the array and stores. 
+      if (focusCtx.focus.length === 0 ) {
+        
+    try {
+      const focusLoad = await fetchFocus();
+      
+      const TDFocus2 = focusLoad.filter((focus) => {
+        const today = new Date(); // gets today's date
+        const oneDay = getDateMinusDays(today, 1); // gets yesterday's date 
+        return focus.focusDate > oneDay;
+      }); 
+      if(TDFocus2.length === 0) { // with matching date, this is skipped. 
+        try {
+          const newId = await storeFocus(newID);
+          // console.log(id) // returns 855? Why? 
+              newdummy.id = newId; //adds new ID from DB to newdummy 
+              newdummy.journal = 'updated?'
+              focusLoad.push(newdummy) // pushes newdummy to focusload for adding to context. 
+              todaysFocus = newdummy; // sets todaysfocus upon creation. 
+                            
+            } catch {
+              console.log("error");
+            }
+          }
+          
+          focusCtx.setFocus(focusLoad);
+        } catch (error) {
+          setError("Could not fetch Focus");
         }
-        focusCtx.setFocus(focusLoad);
-      } catch (error) {
-        setError("Could not fetch Focus");
       }
     }
-
-    getTasks();
-    getFocus();
-  }, []);
-
-  function errorHandler() {
+      getTasks();
+      getFocus();
+    }, []);
+    function errorHandler() {
     setError(null);
     
 // attempt to reload data upon confirm being pressed. 
@@ -101,25 +120,9 @@ todaysFocus = TDFocus;
     return <LoadingOverlay />;
   }
   
-  // const activeTasks = taskCtx.tasks.filter((task) => {
-  //   return task.isComplete === false;
-  // });
+  const focusId = todaysFocus.id;
 
-  // const focusdata = focusCtx.focus;
-  // return <TasksOutput tasks={activeTasks} />;
-
-  //pulls the first Focus- today's foucus. 
-  // if focus doesn't exist create one. 
-  //const TDFocus = todaysFocus[0]; 
-  const focusId = TDFocus.id;
-  const today = new Date();
-
-  // if (focusId.focusDate != today) {
-  //   //focustest = newdummy
-  //   return <FocusOutput defaultValues={newdummy} focusId={4} />;
-
-  // };
-
+  console.log('run')
 
   return <FocusOutput defaultValues={todaysFocus} focusId={focusId} />;
 }
