@@ -28,7 +28,7 @@ const newID = {
 const newdummy = {
     id: 1,
     focusDate: new Date(), // date not created to remove time stamp. 
-    journal: "Memento Mori",
+    journal: " ",
     focusTasks: [],
     tasksCompleted: false, 
 };
@@ -40,6 +40,7 @@ function DailyFocus({route}) {
   const [error, setError] = useState();
   const [isfetching, setIsFetching] = useState(true); // set to true since inital page load will always need to load data.
 
+   
 
 const TDFocus = focusCtx.focus.filter((focus) => {
   const today = new Date(); // gets today's date
@@ -47,14 +48,6 @@ const TDFocus = focusCtx.focus.filter((focus) => {
   return focus.focusDate > oneDay;
 
 });
-let todaysFocus 
-todaysFocus = TDFocus[0];
-if (TDFocus.length === 0 ) {
-  todaysFocus = newdummy; // sets to dummy but updates upon id creation. 
-  // still loads dummy first
-} else{
-  todaysFocus = TDFocus[0];
-}
 // console.log(todaysFocus)
 
 
@@ -74,17 +67,19 @@ if (TDFocus.length === 0 ) {
       setIsFetching(false);
     }
     async function getFocus() {
+      console.log(focusCtx.focus)
       if (focusCtx.focus.length === 0 ) {
         
     try {
       const focusLoad = await fetchFocus();
-      
+      console.log('load focus')
       const TDFocus2 = focusLoad.filter((focus) => {
         const today = new Date(); // gets today's date
         const oneDay = getDateMinusDays(today, 1); // gets yesterday's date 
         return focus.focusDate > oneDay;
       }); 
       if(TDFocus2.length === 0) { // with matching date, this is skipped. 
+        // try doesn't run after first load- refresh uses memory. 
         try {
           const newId = await storeFocus(newID);
           // console.log(id) // returns 855? Why? 
@@ -92,7 +87,7 @@ if (TDFocus.length === 0 ) {
               newdummy.journal = 'updated?'
               focusLoad.push(newdummy) // pushes newdummy to focusload for adding to context. 
               todaysFocus = newdummy; // sets todaysfocus upon creation. 
-                            
+                console.log('TDF - 1')            
             } catch {
               console.log("error");
             }
@@ -120,10 +115,19 @@ if (TDFocus.length === 0 ) {
     return <LoadingOverlay />;
   }
   
+let todaysFocus 
+todaysFocus = TDFocus[0];
+if (TDFocus.length === 0 ) {
+  todaysFocus = newdummy; // sets to dummy but updates upon id creation. 
+  console.log('TDF - 3')            
+  // still loads dummy first
+} else{
+  todaysFocus = TDFocus[0];
+  console.log('TDF - 2')            
+
+}
   const focusId = todaysFocus.id;
-
-  console.log('run')
-
+console.log(todaysFocus)
   return <FocusOutput defaultValues={todaysFocus} focusId={focusId} />;
 }
 
